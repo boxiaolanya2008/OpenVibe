@@ -1,6 +1,6 @@
 {
 	"name": "openvibe",
-	"version": "0.58.1",
+	"version": "0.58.2",
 	"description": "OpenVibe - AI Coding Assistant CLI",
 	"type": "module",
 	"piConfig": {
@@ -92,7 +92,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/openvibe/openvibe.git",
+		"url": "git+https://github.com/boxiaolanya2008/openvibe",
 		"directory": "packages/coding-agent"
 	},
 	"engines": {
