@@ -1,0 +1,1 @@
+node packages/coding-agent/dist/cli.js

@@ -1,0 +1,111 @@
+import { spawnSync } from "node:child_process";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+import {
+	Container,
+	Editor,
+	type EditorOptions,
+	type Focusable,
+	getEditorKeybindings,
+	Spacer,
+	Text,
+	type TUI,
+} from "@mariozechner/pi-tui";
+import type { KeybindingsManager } from "../../../core/keybindings.js";
+import { getEditorTheme, theme } from "../theme/theme.js";
+import { DynamicBorder } from "./dynamic-border.js";
+import { appKeyHint, keyHint } from "./keybinding-hints.js";
+export class ExtensionEditorComponent extends Container implements Focusable {
+	private editor: Editor;
+	private onSubmitCallback: (value: string) => void;
+	private onCancelCallback: () => void;
+	private tui: TUI;
+	private keybindings: KeybindingsManager;
+	private _focused = false;
+	get focused(): boolean {
+		return this._focused;
+	}
+	set focused(value: boolean) {
+		this._focused = value;
+		this.editor.focused = value;
+	}
+	constructor(
+		tui: TUI,
+		keybindings: KeybindingsManager,
+		title: string,
+		prefill: string | undefined,
+		onSubmit: (value: string) => void,
+		onCancel: () => void,
+		options?: EditorOptions,
+	) {
+		super();
+		this.tui = tui;
+		this.keybindings = keybindings;
+		this.onSubmitCallback = onSubmit;
+		this.onCancelCallback = onCancel;
+		this.addChild(new DynamicBorder());
+		this.addChild(new Spacer(1));
+		this.addChild(new Text(theme.fg("accent", title), 1, 0));
+		this.addChild(new Spacer(1));
+		this.editor = new Editor(tui, getEditorTheme(), options);
+		if (prefill) {
+			this.editor.setText(prefill);
+		}
+		this.editor.onSubmit = (text: string) => {
+			this.onSubmitCallback(text);
+		};
+		this.addChild(this.editor);
+		this.addChild(new Spacer(1));
+		const hasExternalEditor = !!(process.env.VISUAL || process.env.EDITOR);
+		const hint =
+			keyHint("selectConfirm", "submit") +
+			"  " +
+			keyHint("newLine", "newline") +
+			"  " +
+			keyHint("selectCancel", "cancel") +
+			(hasExternalEditor ? `  ${appKeyHint(this.keybindings, "externalEditor", "external editor")}` : "");
+		this.addChild(new Text(hint, 1, 0));
+		this.addChild(new Spacer(1));
+		this.addChild(new DynamicBorder());
+	}
+	handleInput(keyData: string): void {
+		const kb = getEditorKeybindings();
+		if (kb.matches(keyData, "selectCancel")) {
+			this.onCancelCallback();
+			return;
+		}
+		if (this.keybindings.matches(keyData, "externalEditor")) {
+			this.openExternalEditor();
+			return;
+		}
+		this.editor.handleInput(keyData);
+	}
+	private openExternalEditor(): void {
+		const editorCmd = process.env.VISUAL || process.env.EDITOR;
+		if (!editorCmd) {
+			return;
+		}
+		const currentText = this.editor.getText();
+		const tmpFile = path.join(os.tmpdir(), `pi-extension-editor-${Date.now()}.md`);
+		try {
+			fs.writeFileSync(tmpFile, currentText, "utf-8");
+			this.tui.stop();
+			const [editor, ...editorArgs] = editorCmd.split(" ");
+			const result = spawnSync(editor, [...editorArgs, tmpFile], {
+				stdio: "inherit",
+				shell: process.platform === "win32",
+			});
+			if (result.status === 0) {
+				const newContent = fs.readFileSync(tmpFile, "utf-8").replace(/\n$/, "");
+				this.editor.setText(newContent);
+			}
+		} finally {
+			try {
+				fs.unlinkSync(tmpFile);
+			} catch {}
+			this.tui.start();
+			this.tui.requestRender(true);
+		}
+	}
+}
