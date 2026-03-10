@@ -111,7 +111,33 @@ export default defineExtension({
 });
 ```
 
-## 文档
+## 历史记录
+
+OpenVibe 自动保存所有会话历史，方便你随时回顾和继续之前的对话。
+
+### 查看历史
+
+```bash
+# 列出所有历史会话
+openvibe --history
+
+# 查看特定会话
+openvibe --session <session-id>
+```
+
+### 历史文件位置
+
+历史记录保存在 `~/.openvibe/sessions/` 目录下，每个会话以 JSONL 格式存储。
+
+### 快捷键
+
+在交互模式下管理历史：
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+R` | 打开历史会话选择器 |
+| `Ctrl+S` | 保存当前会话 |
+| `Ctrl+Shift+S` | 重命名当前会话 |
 
 - [扩展开发指南](docs/extensions.md)
 - [SDK 文档](docs/sdk.md)
