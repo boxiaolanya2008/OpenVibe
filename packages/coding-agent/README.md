@@ -156,4 +156,4 @@ MIT
 ## 相关链接
 
 - [npm 包](https://www.npmjs.com/package/openvibe)
-- [问题反馈](https://github.com/openvibe/openvibe/issues)
+- [问题反馈](https://github.com/boxiaolanya2008/openvibe/issues)

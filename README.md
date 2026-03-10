@@ -246,8 +246,8 @@ A: 任何兼容 OpenAI API 格式的提供商均可使用，包括 OpenAI、Anth
 
 ## 联系我们
 
-- **GitHub Issues**: [提交问题](https://github.com/your-org/openvibe/issues)
-- **邮件**: contact@openvibe.dev
+- **GitHub Issues**: [提交问题](https://github.com/boxiaolanya2008/openvibe/issues)
+- **邮件**: 3520687734@qq.com
 
 ---
 
