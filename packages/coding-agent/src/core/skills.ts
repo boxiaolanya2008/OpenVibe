@@ -10,6 +10,10 @@ const MAX_NAME_LENGTH = 64;
 const MAX_DESCRIPTION_LENGTH = 1024;
 const IGNORE_FILE_NAMES = [".gitignore", ".ignore", ".fdignore"];
 type IgnoreMatcher = ReturnType<typeof ignore>;
+
+function getClaudeSkillsPath(): string {
+	return join(homedir(), ".claude", "skills");
+}
 function toPosixPath(p: string): string {
 	return p.split(sep).join("/");
 }
@@ -212,9 +216,19 @@ export function formatSkillsForPrompt(skills: Skill[]): string {
 		return "";
 	}
 	const lines = [
-		"\n\nThe following skills provide specialized instructions for specific tasks.",
-		"Use the read tool to load a skill's file when the task matches its description.",
-		"When a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.",
+		"\n\n# Skills System",
+		"",
+		"Skills are specialized knowledge files that provide expert guidance for specific tasks.",
+		"Each skill contains detailed instructions, best practices, and context for its domain.",
+		"",
+		"**How to use skills:**",
+		"1. Review the available skills below to find one matching your current task",
+		"2. Use the `read` tool to load the skill's full content from its location",
+		"3. Apply the skill's guidance to your current task",
+		"4. When a skill references relative paths, resolve them against the skill directory",
+		"",
+		"**Invoking a skill:**",
+		"To load a skill, use: `read <location>` where location is the skill's file path",
 		"",
 		"<available_skills>",
 	];
@@ -226,6 +240,9 @@ export function formatSkillsForPrompt(skills: Skill[]): string {
 		lines.push("  </skill>");
 	}
 	lines.push("</available_skills>");
+	lines.push("");
+	lines.push("**Smart Skill Selection:**");
+	lines.push("Before responding to any task, consider if a skill could help. Skills provide domain expertise.");
 	return lines.join("\n");
 }
 function escapeXml(str: string): string {
@@ -294,6 +311,10 @@ export function loadSkills(options: LoadSkillsOptions = {}): LoadSkillsResult {
 	if (includeDefaults) {
 		addSkills(loadSkillsFromDirInternal(join(resolvedAgentDir, "skills"), "user", true));
 		addSkills(loadSkillsFromDirInternal(resolve(cwd, CONFIG_DIR_NAME, "skills"), "project", true));
+		const claudeSkillsPath = getClaudeSkillsPath();
+		if (existsSync(claudeSkillsPath)) {
+			addSkills(loadSkillsFromDirInternal(claudeSkillsPath, "claude", true));
+		}
 	}
 	const userSkillsDir = join(resolvedAgentDir, "skills");
 	const projectSkillsDir = resolve(cwd, CONFIG_DIR_NAME, "skills");

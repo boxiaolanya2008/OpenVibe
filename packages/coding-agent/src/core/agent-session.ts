@@ -79,6 +79,8 @@ import { BUILTIN_SLASH_COMMANDS, type SlashCommandInfo, type SlashCommandLocatio
 import { buildSystemPrompt } from "./system-prompt.js";
 import type { BashOperations } from "./tools/bash.js";
 import { createAllTools } from "./tools/index.js";
+import type { AgentMode } from "./agent-modes.js";
+import { AGENT_MODES, getModeThinkingLevel, getModeTools } from "./agent-modes.js";
 
 // ============================================================================
 // Skill Block Parsing
@@ -147,6 +149,8 @@ export interface AgentSessionConfig {
 	baseToolsOverride?: Record<string, AgentTool>;
 	/** Mutable ref used by Agent to access the current ExtensionRunner */
 	extensionRunnerRef?: { current?: ExtensionRunner };
+	/** Initial agent mode. Default: "default" */
+	initialMode?: AgentMode;
 }
 
 export interface ExtensionBindings {
@@ -274,6 +278,9 @@ export class AgentSession {
 	// Base system prompt (without extension appends) - used to apply fresh appends each turn
 	private _baseSystemPrompt = "";
 
+	// Current agent mode
+	private _mode: AgentMode = "default";
+
 	constructor(config: AgentSessionConfig) {
 		this.agent = config.agent;
 		this.sessionManager = config.sessionManager;
@@ -286,6 +293,7 @@ export class AgentSession {
 		this._extensionRunnerRef = config.extensionRunnerRef;
 		this._initialActiveToolNames = config.initialActiveToolNames;
 		this._baseToolsOverride = config.baseToolsOverride;
+		this._mode = config.initialMode ?? "default";
 
 		// Always subscribe to agent events for internal handling
 		// (session persistence, extensions, auto-compaction, retry logic)
@@ -619,6 +627,98 @@ export class AgentSession {
 		return this.agent.state.thinkingLevel;
 	}
 
+	/** Current agent mode */
+	get mode(): AgentMode {
+		return this._mode;
+	}
+
+	/**
+	 * Set agent mode.
+	 * Updates tools, thinking level, and system prompt based on the mode.
+	 */
+	setMode(mode: AgentMode): void {
+		if (this._mode === mode) return;
+		this._mode = mode;
+
+		const modeConfig = AGENT_MODES[mode];
+		const modeThinkingLevel = modeConfig.thinkingLevel;
+		const modeTools = modeConfig.tools;
+
+		this.agent.setThinkingLevel(modeThinkingLevel);
+		this.setActiveToolsByName(modeTools);
+
+		this._baseSystemPrompt = this._rebuildSystemPrompt(modeTools, modeThinkingLevel);
+		this.agent.setSystemPrompt(this._baseSystemPrompt);
+	}
+
+	/**
+	 * Cycle to next agent mode.
+	 * @returns New mode name
+	 */
+	cycleMode(): AgentMode {
+		const modes: AgentMode[] = ["default", "plan", "spec"];
+		const currentIndex = modes.indexOf(this._mode);
+		const nextIndex = (currentIndex + 1) % modes.length;
+		const nextMode = modes[nextIndex];
+		this.setMode(nextMode);
+		return nextMode;
+	}
+
+	/**
+	 * Set the model for the agent.
+	 * Updates thinking level based on model capabilities.
+	 */
+	async setModel(model: Model<any>): Promise<void> {
+		const previousModel = this.agent.state.model;
+		this.agent.setModel(model);
+
+		let effectiveThinking = this.thinkingLevel;
+		if (!model.reasoning) {
+			effectiveThinking = "off";
+		} else if (effectiveThinking === "xhigh" && !supportsXhigh(model)) {
+			effectiveThinking = "high";
+		}
+
+		if (effectiveThinking !== this.thinkingLevel) {
+			this.agent.setThinkingLevel(effectiveThinking);
+			this.sessionManager.appendThinkingLevelChange(effectiveThinking);
+		}
+
+		this._baseSystemPrompt = this._rebuildSystemPrompt(this.getActiveToolNames(), effectiveThinking);
+		this.agent.setSystemPrompt(this._baseSystemPrompt);
+	}
+
+	/**
+	 * Cycle to next model in scoped models list.
+	 * @returns Model cycle result or undefined if no scoped models
+	 */
+	async cycleModel(): Promise<ModelCycleResult | undefined> {
+		if (this._scopedModels.length === 0) {
+			return undefined;
+		}
+
+		const currentModel = this.agent.state.model;
+		let currentIndex = -1;
+
+		for (let i = 0; i < this._scopedModels.length; i++) {
+			if (modelsAreEqual(this._scopedModels[i].model, currentModel)) {
+				currentIndex = i;
+				break;
+			}
+		}
+
+		const nextIndex = (currentIndex + 1) % this._scopedModels.length;
+		const nextModelConfig = this._scopedModels[nextIndex];
+
+		await this.setModel(nextModelConfig.model);
+
+		return {
+			model: nextModelConfig.model,
+			thinkingLevel: this.thinkingLevel,
+			isScoped: true,
+		};
+	}
+
 	/** Whether agent is currently streaming a response */
 	get isStreaming(): boolean {
 		return this.agent.state.isStreaming;
@@ -788,6 +888,7 @@ export class AgentSession {
 			toolSnippets,
 			promptGuidelines,
 			thinkingLevel: thinkingLevel ?? this.thinkingLevel,
+			mode: this._mode,
 		});
 	}
 

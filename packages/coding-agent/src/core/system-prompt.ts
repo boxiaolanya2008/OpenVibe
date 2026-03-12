@@ -2,6 +2,8 @@ import type { ThinkingLevel } from "@mariozechner/pi-agent-core";
 import { getDocsPath, getExamplesPath, getReadmePath } from "../config.js";
 import { applyBranding } from "./branded-ai.js";
 import { formatSkillsForPrompt, type Skill } from "./skills.js";
+import type { AgentMode } from "./agent-modes.js";
+import { getModePromptAddition, getModeTools } from "./agent-modes.js";
 
 const toolDescriptions: Record<string, string> = {
 	read: "Read file contents",
@@ -36,6 +38,7 @@ export interface BuildSystemPromptOptions {
 	contextFiles?: Array<{ path: string; content: string }>;
 	skills?: Skill[];
 	thinkingLevel?: ThinkingLevel;
+	mode?: AgentMode;
 }
 export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): string {
 	const {
@@ -48,6 +51,7 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): strin
 		contextFiles: providedContextFiles,
 		skills: providedSkills,
 		thinkingLevel = "off",
+		mode = "default",
 	} = options;
 	const resolvedCwd = cwd ?? process.cwd();
 	const now = new Date();
@@ -64,6 +68,9 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): strin
 	const appendSection = appendSystemPrompt ? `\n\n${appendSystemPrompt}` : "";
 	const contextFiles = providedContextFiles ?? [];
 	const skills = providedSkills ?? [];
+	const modePromptAddition = getModePromptAddition(mode);
+	const modeTools = getModeTools(mode);
+	const effectiveTools = selectedTools ?? modeTools;
 	if (customPrompt) {
 		let prompt = customPrompt;
 		if (appendSection) {
@@ -87,7 +94,7 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): strin
 	const readmePath = getReadmePath();
 	const docsPath = getDocsPath();
 	const examplesPath = getExamplesPath();
-	const tools = selectedTools || ["read", "bash", "edit", "write"];
+	const tools = effectiveTools;
 	const toolsList =
 		tools.length > 0
 			? tools
@@ -175,6 +182,9 @@ OpenVibe documentation (read only when the user asks about OpenVibe itself, its 
 	}
 	if (hasRead && skills.length > 0) {
 		prompt += formatSkillsForPrompt(skills);
+	}
+	if (modePromptAddition) {
+		prompt += `\n\n${modePromptAddition}`;
 	}
 	prompt += `\nCurrent date and time: ${dateTime}`;
 	prompt += `\nCurrent working directory: ${resolvedCwd}`;

@@ -18,6 +18,17 @@ export {
 	type SessionStats,
 } from "./agent-session.js";
 export {
+	type AgentMode,
+	type AgentModeConfig,
+	AGENT_MODES,
+	getAllModes,
+	getAgentModeConfig,
+	getModePromptAddition,
+	getModeThinkingLevel,
+	getModeTools,
+	getClaudeSkillsPath,
+} from "./agent-modes.js";
+export {
 	APIParallelExecutor,
 	type ConcurrencyStats,
 	detectOptimalConcurrency,
