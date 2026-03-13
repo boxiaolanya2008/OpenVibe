@@ -332,16 +332,28 @@ export function loadSkills(options: LoadSkillsOptions = {}): LoadSkillsResult {
 		}
 	}
 	if (includeDefaults) {
-		// Load from all global skill directories
-		for (const { path, source } of getGlobalSkillPaths()) {
+		// Load from global skill directories with fallback
+		const globalPaths = getGlobalSkillPaths();
+		for (const { path, source } of globalPaths) {
 			if (existsSync(path)) {
-				addSkills(loadSkillsFromDirInternal(path, source, true));
+				const result = loadSkillsFromDirInternal(path, source, true);
+				addSkills(result);
+				// If found skills in this directory, stop checking other global paths
+				if (result.skills.length > 0) {
+					break;
+				}
 			}
 		}
-		// Load from all project-level skill directories
-		for (const { path, source } of getProjectSkillPaths(cwd)) {
+		// Load from project-level skill directories with fallback
+		const projectPaths = getProjectSkillPaths(cwd);
+		for (const { path, source } of projectPaths) {
 			if (existsSync(path)) {
-				addSkills(loadSkillsFromDirInternal(path, source, true));
+				const result = loadSkillsFromDirInternal(path, source, true);
+				addSkills(result);
+				// If found skills in this directory, stop checking other project paths
+				if (result.skills.length > 0) {
+					break;
+				}
 			}
 		}
 	}
