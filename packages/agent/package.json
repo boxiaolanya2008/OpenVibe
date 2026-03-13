@@ -1,6 +1,6 @@
 {
 	"name": "@boxiaolanya2008/pi-agent-core",
-	"version": "0.60.4",
+	"version": "0.60.5",
 	"description": "General-purpose agent with transport abstraction, state management, and attachment support",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -17,7 +17,7 @@
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"dependencies": {
-		"@boxiaolanya2008/pi-ai": "^0.60.4"
+		"@boxiaolanya2008/pi-ai": "^0.60.5"
 	},
 	"keywords": [
 		"ai",
