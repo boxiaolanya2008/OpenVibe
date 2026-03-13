@@ -41,7 +41,7 @@
 	"engines": {
 		"node": ">=20.0.0"
 	},
-	"version": "0.60.6",
+	"version": "0.60.7",
 	"dependencies": {
 		"@mariozechner/jiti": "^2.6.5",
 		"openvibe": "file:packages/coding-agent",
