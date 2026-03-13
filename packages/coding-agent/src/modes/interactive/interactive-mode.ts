@@ -2,8 +2,8 @@ import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { AssistantMessage, ImageContent, Message } from "@mariozechner/pi-ai";
+import type { AgentMessage } from "@boxiaolanya2008/pi-agent-core";
+import type { AssistantMessage, ImageContent, Message } from "@boxiaolanya2008/pi-ai";
 import type {
 	EditorAction,
 	EditorComponent,
@@ -13,7 +13,7 @@ import type {
 	OverlayHandle,
 	OverlayOptions,
 	SlashCommand,
-} from "@mariozechner/pi-tui";
+} from "@boxiaolanya2008/pi-tui";
 import {
 	CombinedAutocompleteProvider,
 	type Component,
@@ -27,7 +27,7 @@ import {
 	TruncatedText,
 	TUI,
 	visibleWidth,
-} from "@mariozechner/pi-tui";
+} from "@boxiaolanya2008/pi-tui";
 import { spawn, spawnSync } from "child_process";
 import { APP_NAME, getDebugLogPath, getShareViewerUrl, VERSION } from "../../config.js";
 import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.js";

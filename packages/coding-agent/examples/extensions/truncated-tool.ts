@@ -14,6 +14,7 @@
  * built-in `grep` tool in src/core/tools/grep.ts for a more complete implementation.
  */
 
+import { Text } from "@boxiaolanya2008/pi-tui";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import {
 	DEFAULT_MAX_BYTES,
@@ -22,7 +23,6 @@ import {
 	type TruncationResult,
 	truncateHead,
 } from "@mariozechner/pi-coding-agent";
-import { Text } from "@mariozechner/pi-tui";
 import { Type } from "@sinclair/typebox";
 import { execSync } from "child_process";
 import { mkdtempSync, writeFileSync } from "fs";

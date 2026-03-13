@@ -1,4 +1,4 @@
-import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
+import type { AgentTool, AgentToolResult } from "@boxiaolanya2008/pi-agent-core";
 import { type Static, Type } from "@sinclair/typebox";
 import { existsSync } from "fs";
 import { globSync } from "glob";

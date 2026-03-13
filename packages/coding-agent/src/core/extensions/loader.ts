@@ -3,12 +3,12 @@ import { createRequire } from "node:module";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import * as _bundledPiAgentCore from "@boxiaolanya2008/pi-agent-core";
+import * as _bundledPiAi from "@boxiaolanya2008/pi-ai";
+import * as _bundledPiAiOauth from "@boxiaolanya2008/pi-ai/oauth";
+import type { KeyId } from "@boxiaolanya2008/pi-tui";
+import * as _bundledPiTui from "@boxiaolanya2008/pi-tui";
 import { createJiti } from "@mariozechner/jiti";
-import * as _bundledPiAgentCore from "@mariozechner/pi-agent-core";
-import * as _bundledPiAi from "@mariozechner/pi-ai";
-import * as _bundledPiAiOauth from "@mariozechner/pi-ai/oauth";
-import type { KeyId } from "@mariozechner/pi-tui";
-import * as _bundledPiTui from "@mariozechner/pi-tui";
 import * as _bundledTypebox from "@sinclair/typebox";
 import { getAgentDir, isBunBinary } from "../../config.js";
 import * as _bundledPiCodingAgent from "../../index.js";
@@ -29,11 +29,11 @@ import type {
 
 const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@sinclair/typebox": _bundledTypebox,
-	"@mariozechner/pi-agent-core": _bundledPiAgentCore,
-	"@mariozechner/pi-tui": _bundledPiTui,
-	"@mariozechner/pi-ai": _bundledPiAi,
-	"@mariozechner/pi-ai/oauth": _bundledPiAiOauth,
-	"@mariozechner/pi-coding-agent": _bundledPiCodingAgent,
+	"@boxiaolanya2008/pi-agent-core": _bundledPiAgentCore,
+	"@boxiaolanya2008/pi-tui": _bundledPiTui,
+	"@boxiaolanya2008/pi-ai": _bundledPiAi,
+	"@boxiaolanya2008/pi-ai/oauth": _bundledPiAiOauth,
+	"@boxiaolanya2008/pi-coding-agent": _bundledPiCodingAgent,
 };
 const require = createRequire(import.meta.url);
 let _aliases: Record<string, string> | null = null;
@@ -52,11 +52,14 @@ function getAliases(): Record<string, string> {
 		return fileURLToPath(import.meta.resolve(specifier));
 	};
 	_aliases = {
-		"@mariozechner/pi-coding-agent": packageIndex,
-		"@mariozechner/pi-agent-core": resolveWorkspaceOrImport("agent/dist/index.js", "@mariozechner/pi-agent-core"),
-		"@mariozechner/pi-tui": resolveWorkspaceOrImport("tui/dist/index.js", "@mariozechner/pi-tui"),
-		"@mariozechner/pi-ai": resolveWorkspaceOrImport("ai/dist/index.js", "@mariozechner/pi-ai"),
-		"@mariozechner/pi-ai/oauth": resolveWorkspaceOrImport("ai/dist/oauth.js", "@mariozechner/pi-ai/oauth"),
+		"@boxiaolanya2008/pi-coding-agent": packageIndex,
+		"@boxiaolanya2008/pi-agent-core": resolveWorkspaceOrImport(
+			"agent/dist/index.js",
+			"@boxiaolanya2008/pi-agent-core",
+		),
+		"@boxiaolanya2008/pi-tui": resolveWorkspaceOrImport("tui/dist/index.js", "@boxiaolanya2008/pi-tui"),
+		"@boxiaolanya2008/pi-ai": resolveWorkspaceOrImport("ai/dist/index.js", "@boxiaolanya2008/pi-ai"),
+		"@boxiaolanya2008/pi-ai/oauth": resolveWorkspaceOrImport("ai/dist/oauth.js", "@boxiaolanya2008/pi-ai/oauth"),
 		"@sinclair/typebox": typeboxRoot,
 	};
 	return _aliases;

@@ -1,5 +1,5 @@
-import { Agent, type AgentEvent } from "@mariozechner/pi-agent-core";
-import { getModel, type ImageContent } from "@mariozechner/pi-ai";
+import { Agent, type AgentEvent } from "@boxiaolanya2008/pi-agent-core";
+import { getModel, type ImageContent } from "@boxiaolanya2008/pi-ai";
 import { existsSync, readFileSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import {

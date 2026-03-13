@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
-import type { EditorTheme, MarkdownTheme, SelectListTheme } from "@mariozechner/pi-tui";
+import type { EditorTheme, MarkdownTheme, SelectListTheme } from "@boxiaolanya2008/pi-tui";
 import { type Static, Type } from "@sinclair/typebox";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 import chalk from "chalk";
@@ -536,7 +536,7 @@ function detectTerminalBackground(): "dark" | "light" {
 function getDefaultTheme(): string {
 	return detectTerminalBackground();
 }
-const THEME_KEY = Symbol.for("@mariozechner/pi-coding-agent:theme");
+const THEME_KEY = Symbol.for("@boxiaolanya2008/pi-coding-agent:theme");
 export const theme: Theme = new Proxy({} as Theme, {
 	get(_target, prop) {
 		const t = (globalThis as Record<symbol, Theme>)[THEME_KEY];
@@ -890,7 +890,7 @@ export function getEditorTheme(): EditorTheme {
 		selectList: getSelectListTheme(),
 	};
 }
-export function getSettingsListTheme(): import("@mariozechner/pi-tui").SettingsListTheme {
+export function getSettingsListTheme(): import("@boxiaolanya2008/pi-tui").SettingsListTheme {
 	return {
 		label: (text: string, selected: boolean) => (selected ? theme.fg("accent", text) : text),
 		value: (text: string, selected: boolean) => (selected ? theme.fg("accent", text) : theme.fg("muted", text)),

@@ -1,4 +1,4 @@
-import type { AssistantMessage, AssistantMessageEvent, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, AssistantMessageEvent, Model } from "@boxiaolanya2008/pi-ai";
 
 interface AcceleratedStreamOptions {
 	prefetch?: boolean;

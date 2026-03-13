@@ -1,6 +1,6 @@
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { ImageContent, Model } from "@mariozechner/pi-ai";
-import type { KeyId } from "@mariozechner/pi-tui";
+import type { AgentMessage } from "@boxiaolanya2008/pi-agent-core";
+import type { ImageContent, Model } from "@boxiaolanya2008/pi-ai";
+import type { KeyId } from "@boxiaolanya2008/pi-tui";
 import { type Theme, theme } from "../../modes/interactive/theme/theme.js";
 import type { ResourceDiagnostic } from "../diagnostics.js";
 import type { KeyAction, KeybindingsConfig } from "../keybindings.js";

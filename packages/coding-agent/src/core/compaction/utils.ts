@@ -1,5 +1,5 @@
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { Message } from "@mariozechner/pi-ai";
+import type { AgentMessage } from "@boxiaolanya2008/pi-agent-core";
+import type { Message } from "@boxiaolanya2008/pi-ai";
 export interface FileOperations {
 	read: Set<string>;
 	written: Set<string>;

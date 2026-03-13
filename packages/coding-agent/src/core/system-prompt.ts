@@ -3,7 +3,7 @@
  * A creative system prompt that transforms perceived limitations into demonstrated capability
  */
 
-import type { ThinkingLevel } from "@mariozechner/pi-agent-core";
+import type { ThinkingLevel } from "@boxiaolanya2008/pi-agent-core";
 import { getDocsPath, getExamplesPath, getReadmePath } from "../config.js";
 import type { AgentMode } from "./agent-modes.js";
 import { getModePromptAddition, getModeTools } from "./agent-modes.js";

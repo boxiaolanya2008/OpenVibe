@@ -1,4 +1,4 @@
-import type { Component, TUI } from "@mariozechner/pi-tui";
+import type { Component, TUI } from "@boxiaolanya2008/pi-tui";
 import { theme } from "../theme/theme.js";
 
 const WIDTH = 31;

@@ -1,5 +1,5 @@
 import { access, readFile, stat } from "node:fs/promises";
-import type { ImageContent } from "@mariozechner/pi-ai";
+import type { ImageContent } from "@boxiaolanya2008/pi-ai";
 import chalk from "chalk";
 import { resolve } from "path";
 import { resolveReadPath } from "../core/tools/path-utils.js";

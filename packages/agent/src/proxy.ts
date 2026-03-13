@@ -8,7 +8,7 @@ import {
 	type SimpleStreamOptions,
 	type StopReason,
 	type ToolCall,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 
 class ProxyMessageEventStream extends EventStream<AssistantMessageEvent, AssistantMessage> {
 	constructor() {

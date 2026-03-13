@@ -1,4 +1,4 @@
-import type { AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, Model } from "@boxiaolanya2008/pi-ai";
 import { APIParallelExecutor } from "./api-concurrency.js";
 import { accelerateStream } from "./response-accelerator.js";
 
@@ -56,13 +56,13 @@ export class AcceleratedAPIClient {
 	}
 	async singleRequest(model: Model<any>, context: Context, options?: any): Promise<AssistantMessage> {
 		await this.rateLimiter.acquire();
-		const stream = await import("@mariozechner/pi-ai");
+		const stream = await import("@boxiaolanya2008/pi-ai");
 		const response = await stream.streamSimple(model, context, options);
 		return response.result();
 	}
 	async *singleStreamRequest(model: Model<any>, context: Context, options?: any): AsyncGenerator<any, void, void> {
 		await this.rateLimiter.acquire();
-		const stream = await import("@mariozechner/pi-ai");
+		const stream = await import("@boxiaolanya2008/pi-ai");
 		const response = await stream.streamSimple(model, context, options);
 		yield* accelerateStream(response as any, { priority: "speed" });
 	}

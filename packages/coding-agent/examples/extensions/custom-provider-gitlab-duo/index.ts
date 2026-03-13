@@ -20,7 +20,7 @@ import {
 	type SimpleStreamOptions,
 	streamSimpleAnthropic,
 	streamSimpleOpenAIResponses,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
 // =============================================================================

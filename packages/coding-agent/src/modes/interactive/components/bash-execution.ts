@@ -1,4 +1,4 @@
-import { Container, Loader, Spacer, Text, type TUI } from "@mariozechner/pi-tui";
+import { Container, Loader, Spacer, Text, type TUI } from "@boxiaolanya2008/pi-tui";
 import stripAnsi from "strip-ansi";
 import {
 	DEFAULT_MAX_BYTES,

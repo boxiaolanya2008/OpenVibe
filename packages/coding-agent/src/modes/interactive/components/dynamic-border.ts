@@ -1,4 +1,4 @@
-import type { Component } from "@mariozechner/pi-tui";
+import type { Component } from "@boxiaolanya2008/pi-tui";
 import { theme } from "../theme/theme.js";
 export class DynamicBorder implements Component {
 	private color: (str: string) => string;

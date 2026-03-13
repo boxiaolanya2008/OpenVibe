@@ -4,7 +4,7 @@
  * Works transparently with all models without modifying prompts
  */
 
-import type { Api, Model } from "@mariozechner/pi-ai";
+import type { Api, Model } from "@boxiaolanya2008/pi-ai";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { getAgentDir } from "../config.js";

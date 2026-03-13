@@ -8,7 +8,7 @@ import type {
 	TextContent,
 	Tool,
 	ToolResultMessage,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import type { Static, TSchema } from "@sinclair/typebox";
 export type StreamFn = (
 	...args: Parameters<typeof streamSimple>

@@ -1,6 +1,6 @@
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { AssistantMessage, Model, Usage } from "@mariozechner/pi-ai";
-import { completeSimple } from "@mariozechner/pi-ai";
+import type { AgentMessage } from "@boxiaolanya2008/pi-agent-core";
+import type { AssistantMessage, Model, Usage } from "@boxiaolanya2008/pi-ai";
+import { completeSimple } from "@boxiaolanya2008/pi-ai";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 import {

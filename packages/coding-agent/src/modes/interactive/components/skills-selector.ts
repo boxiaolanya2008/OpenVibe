@@ -1,4 +1,4 @@
-import { Container, SelectList, Spacer, Text } from "@mariozechner/pi-tui";
+import { Container, SelectList, Spacer, Text } from "@boxiaolanya2008/pi-tui";
 import type { Skill } from "../../../core/skills.js";
 import { getSelectListTheme, theme } from "../theme/theme.js";
 

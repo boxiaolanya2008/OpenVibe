@@ -5,7 +5,7 @@ import {
 	streamSimple,
 	type ToolResultMessage,
 	validateToolArguments,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import type {
 	AgentContext,
 	AgentEvent,

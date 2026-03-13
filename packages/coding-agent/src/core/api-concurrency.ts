@@ -1,4 +1,4 @@
-import type { AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, Model } from "@boxiaolanya2008/pi-ai";
 
 interface PendingRequest {
 	id: string;
@@ -88,7 +88,7 @@ class ConcurrencyManager {
 	}
 	private async executeRequest(pending: PendingRequest): Promise<void> {
 		try {
-			const stream = await import("@mariozechner/pi-ai");
+			const stream = await import("@boxiaolanya2008/pi-ai");
 			const response = await stream.streamSimple(pending.model, pending.context, pending.options);
 			const result = await response.result();
 			pending.resolve(result);
@@ -149,7 +149,7 @@ export class APIParallelExecutor {
 			return this.concurrencyManager.execute(
 				`req-${Date.now()}-${index}`,
 				async () => {
-					const stream = await import("@mariozechner/pi-ai");
+					const stream = await import("@boxiaolanya2008/pi-ai");
 					const response = await stream.streamSimple(req.model, req.context, req.options);
 					return response.result();
 				},
@@ -171,7 +171,7 @@ export class APIParallelExecutor {
 				.execute(
 					`stream-req-${Date.now()}-${index}`,
 					async () => {
-						const stream = await import("@mariozechner/pi-ai");
+						const stream = await import("@boxiaolanya2008/pi-ai");
 						const response = await stream.streamSimple(req.model, req.context, req.options);
 						return response.result();
 					},

@@ -1,5 +1,5 @@
-import type { Component } from "@mariozechner/pi-tui";
-import { Container, Spacer, Text, type TUI } from "@mariozechner/pi-tui";
+import type { Component } from "@boxiaolanya2008/pi-tui";
+import { Container, Spacer, Text, type TUI } from "@boxiaolanya2008/pi-tui";
 import {
 	loadUserConfig,
 	type ModelConfig,

@@ -1,4 +1,4 @@
-import type { AssistantMessage, Context, TextContent } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, TextContent } from "@boxiaolanya2008/pi-ai";
 export interface BrandedContext extends Context {
 	brandName: string;
 	originalModel?: string;

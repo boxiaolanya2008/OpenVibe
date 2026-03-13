@@ -1,5 +1,5 @@
-import type { AssistantMessage } from "@mariozechner/pi-ai";
-import { Container, Markdown, type MarkdownTheme, Spacer, Text } from "@mariozechner/pi-tui";
+import type { AssistantMessage } from "@boxiaolanya2008/pi-ai";
+import { Container, Markdown, type MarkdownTheme, Spacer, Text } from "@boxiaolanya2008/pi-tui";
 import { getMarkdownTheme, theme } from "../theme/theme.js";
 export class AssistantMessageComponent extends Container {
 	private contentContainer: Container;

@@ -1,5 +1,5 @@
-import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
-import type { AssistantMessage, ToolResultMessage } from "@mariozechner/pi-ai";
+import type { AgentTool, AgentToolResult } from "@boxiaolanya2008/pi-agent-core";
+import type { AssistantMessage, ToolResultMessage } from "@boxiaolanya2008/pi-ai";
 import { globalMetrics, parallelExecute } from "./parallel-executor.js";
 
 interface ToolCallInfo {

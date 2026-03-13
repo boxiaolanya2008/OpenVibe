@@ -10,7 +10,7 @@
  * - createMomSettingsManager: Creates a SettingsManager backed by workspace settings.json
  */
 
-import type { UserMessage } from "@mariozechner/pi-ai";
+import type { UserMessage } from "@boxiaolanya2008/pi-ai";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { type SessionManager, type SessionMessageEntry, SettingsManager } from "openvibe";
 import { dirname, join } from "path";

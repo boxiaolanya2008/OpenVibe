@@ -1,4 +1,4 @@
-import type { ImageContent, TextContent } from "@mariozechner/pi-ai";
+import type { ImageContent, TextContent } from "@boxiaolanya2008/pi-ai";
 import type { Theme } from "../../modes/interactive/theme/theme.js";
 import type { ToolDefinition } from "../extensions/types.js";
 import { ansiLinesToHtml } from "./ansi-to-html.js";

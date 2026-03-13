@@ -4,7 +4,7 @@
  * This is a third-party architecture implementation
  */
 
-import type { Api, Model } from "@mariozechner/pi-ai";
+import type { Api, Model } from "@boxiaolanya2008/pi-ai";
 import type {
 	IContextProvider,
 	IModelContextConfig,

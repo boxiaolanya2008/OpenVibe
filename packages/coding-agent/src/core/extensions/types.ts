@@ -13,7 +13,7 @@ import type {
 	AgentToolResult,
 	AgentToolUpdateCallback,
 	ThinkingLevel,
-} from "@mariozechner/pi-agent-core";
+} from "@boxiaolanya2008/pi-agent-core";
 import type {
 	Api,
 	AssistantMessageEvent,
@@ -26,7 +26,7 @@ import type {
 	SimpleStreamOptions,
 	TextContent,
 	ToolResultMessage,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import type {
 	AutocompleteItem,
 	Component,
@@ -36,7 +36,7 @@ import type {
 	OverlayHandle,
 	OverlayOptions,
 	TUI,
-} from "@mariozechner/pi-tui";
+} from "@boxiaolanya2008/pi-tui";
 import type { Static, TSchema } from "@sinclair/typebox";
 import type { Theme } from "../../modes/interactive/theme/theme.js";
 import type { BashResult } from "../bash-executor.js";

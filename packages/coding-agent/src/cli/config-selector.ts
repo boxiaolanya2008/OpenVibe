@@ -1,4 +1,4 @@
-import { ProcessTerminal, TUI } from "@mariozechner/pi-tui";
+import { ProcessTerminal, TUI } from "@boxiaolanya2008/pi-tui";
 import type { ResolvedPaths } from "../core/package-manager.js";
 import type { SettingsManager } from "../core/settings-manager.js";
 import { ConfigSelectorComponent } from "../modes/interactive/components/config-selector.js";

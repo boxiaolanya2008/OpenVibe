@@ -13,8 +13,8 @@ process.on("unhandledRejection", (reason, promise) => {
 	process.exit(1);
 });
 
-import { setBedrockProviderModule } from "@mariozechner/pi-ai";
-import { bedrockProviderModule } from "@mariozechner/pi-ai/bedrock-provider";
+import { setBedrockProviderModule } from "@boxiaolanya2008/pi-ai";
+import { bedrockProviderModule } from "@boxiaolanya2008/pi-ai/bedrock-provider";
 import fs from "fs";
 import { EnvHttpProxyAgent, setGlobalDispatcher } from "undici";
 import { main } from "./main.js";

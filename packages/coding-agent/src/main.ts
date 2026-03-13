@@ -1,4 +1,4 @@
-import { type ImageContent, supportsXhigh } from "@mariozechner/pi-ai";
+import { type ImageContent, supportsXhigh } from "@boxiaolanya2008/pi-ai";
 import chalk from "chalk";
 import fs from "fs";
 import { createInterface } from "readline";

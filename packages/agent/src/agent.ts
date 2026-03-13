@@ -13,7 +13,7 @@ import {
 	type TextContent,
 	type ThinkingBudgets,
 	type Transport,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import { agentLoop, agentLoopContinue } from "./agent-loop.js";
 import type {
 	AgentContext,

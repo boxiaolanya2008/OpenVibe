@@ -1,4 +1,4 @@
-import { Text } from "@mariozechner/pi-tui";
+import { Text } from "@boxiaolanya2008/pi-tui";
 export interface VisualTruncateResult {
 	visualLines: string[];
 	skippedCount: number;

@@ -1,4 +1,4 @@
-import type { AssistantMessage, ImageContent } from "@mariozechner/pi-ai";
+import type { AssistantMessage, ImageContent } from "@boxiaolanya2008/pi-ai";
 import type { AgentSession } from "../core/agent-session.js";
 export interface PrintModeOptions {
 	mode: "text" | "json";

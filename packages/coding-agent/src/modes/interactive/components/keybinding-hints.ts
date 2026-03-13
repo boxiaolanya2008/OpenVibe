@@ -1,4 +1,4 @@
-import { type EditorAction, getEditorKeybindings, type KeyId } from "@mariozechner/pi-tui";
+import { type EditorAction, getEditorKeybindings, type KeyId } from "@boxiaolanya2008/pi-tui";
 import type { AppAction, KeybindingsManager } from "../../../core/keybindings.js";
 import { theme } from "../theme/theme.js";
 

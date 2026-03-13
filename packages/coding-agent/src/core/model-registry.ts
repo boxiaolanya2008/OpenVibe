@@ -5,7 +5,7 @@ import {
 	type Model,
 	resetApiProviders,
 	type SimpleStreamOptions,
-} from "@mariozechner/pi-ai";
+} from "@boxiaolanya2008/pi-ai";
 import type { AuthStorage } from "./auth-storage.js";
 import { clearConfigValueCache } from "./resolve-config-value.js";
 import { loadUserConfig } from "./user-config.js";

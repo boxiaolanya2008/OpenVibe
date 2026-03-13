@@ -1,4 +1,4 @@
-import type { AssistantMessage, AssistantMessageEvent } from "@mariozechner/pi-ai";
+import type { AssistantMessage, AssistantMessageEvent } from "@boxiaolanya2008/pi-ai";
 import { globalMultiGPUExecutor } from "./multi-gpu-executor.js";
 
 interface StreamProcessorConfig {
