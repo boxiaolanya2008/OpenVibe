@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.61.0] - 2025-03-13
 
+### Added
+
+- **Update Check**: Added automatic version check from npm registry on startup
+  - Checks for new versions without requiring a remote server
+  - Caches results for 24 hours to avoid frequent requests
+  - Shows update notification when a newer version is available
+  - Can be skipped with `--offline` flag or `PI_SKIP_VERSION_CHECK` env variable
+
+### Changed
+
+- **Skills Loading**: Changed to priority-based fallback system
+  - Checks skill directories in priority order
+  - Stops checking once skills are found in a higher priority directory
+  - Allows overriding default skills by placing them in higher priority directories
+
 ### Fixed
 
 - Fixed CI failures: resolved biome lint errors and TypeScript compilation issues

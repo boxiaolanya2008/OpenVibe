@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
-import { join } from "path";
-import { homedir } from "os";
 import chalk from "chalk";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { homedir } from "os";
+import { join } from "path";
 
 const CACHE_DIR = join(homedir(), ".openvibe");
 const CACHE_FILE = join(CACHE_DIR, "version-check.json");
@@ -29,7 +29,7 @@ function parseVersion(version: string): number[] {
 function isNewer(current: string, latest: string): boolean {
 	const currentParts = parseVersion(current);
 	const latestParts = parseVersion(latest);
-	
+
 	for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
 		const currentPart = currentParts[i] || 0;
 		const latestPart = latestParts[i] || 0;
@@ -43,15 +43,15 @@ async function fetchLatestVersion(): Promise<string | null> {
 	try {
 		const controller = new AbortController();
 		const timeout = setTimeout(() => controller.abort(), 5000);
-		
+
 		const response = await fetch("https://registry.npmjs.org/openvibe", {
 			signal: controller.signal,
 		});
 		clearTimeout(timeout);
-		
+
 		if (!response.ok) return null;
-		
-		const data = await response.json() as { "dist-tags"?: { latest?: string } };
+
+		const data = (await response.json()) as { "dist-tags"?: { latest?: string } };
 		return data["dist-tags"]?.latest || null;
 	} catch {
 		return null;
@@ -83,9 +83,9 @@ export async function checkForUpdates(): Promise<void> {
 	const currentVersion = getCurrentVersion();
 	const cache = readCache();
 	const now = Date.now();
-	
+
 	let latestVersion: string | null;
-	
+
 	// Use cached version if checked recently
 	if (cache && now - cache.lastCheck < CHECK_INTERVAL) {
 		latestVersion = cache.latestVersion;
@@ -96,15 +96,37 @@ export async function checkForUpdates(): Promise<void> {
 			writeCache({ lastCheck: now, latestVersion });
 		}
 	}
-	
+
 	if (latestVersion && isNewer(currentVersion, latestVersion)) {
 		console.log();
 		console.log(chalk.yellow("┌─────────────────────────────────────────────────────────┐"));
-		console.log(chalk.yellow("│") + "  " + chalk.bold("Update Available") + "                                         " + chalk.yellow("│"));
-		console.log(chalk.yellow("│") + `  Current: ${chalk.gray(currentVersion)}` + "                                         " + chalk.yellow("│"));
-		console.log(chalk.yellow("│") + `  Latest:  ${chalk.green(latestVersion)}` + "                                          " + chalk.yellow("│"));
+		console.log(
+			chalk.yellow("│") +
+				"  " +
+				chalk.bold("Update Available") +
+				"                                         " +
+				chalk.yellow("│"),
+		);
+		console.log(
+			chalk.yellow("│") +
+				`  Current: ${chalk.gray(currentVersion)}` +
+				"                                         " +
+				chalk.yellow("│"),
+		);
+		console.log(
+			chalk.yellow("│") +
+				`  Latest:  ${chalk.green(latestVersion)}` +
+				"                                          " +
+				chalk.yellow("│"),
+		);
 		console.log(chalk.yellow("│") + "                                                          " + chalk.yellow("│"));
-		console.log(chalk.yellow("│") + "  Run " + chalk.cyan("npm i -g openvibe") + " to update                     " + chalk.yellow("│"));
+		console.log(
+			chalk.yellow("│") +
+				"  Run " +
+				chalk.cyan("npm i -g openvibe") +
+				" to update                     " +
+				chalk.yellow("│"),
+		);
 		console.log(chalk.yellow("└─────────────────────────────────────────────────────────┘"));
 		console.log();
 	}

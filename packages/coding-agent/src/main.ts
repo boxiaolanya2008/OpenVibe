@@ -21,10 +21,10 @@ import { SessionManager } from "./core/session-manager.js";
 import { SettingsManager } from "./core/settings-manager.js";
 import { printTimings, time } from "./core/timings.js";
 import { allTools } from "./core/tools/index.js";
-import { checkForUpdates } from "./utils/version-check.js";
 import { runMigrations, showDeprecationWarnings } from "./migrations.js";
 import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.js";
 import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.js";
+import { checkForUpdates } from "./utils/version-check.js";
 
 function debugLog(stage: string, message: string, data?: any) {
 	const logLine = `[${new Date().toISOString()}] [${stage}] ${message}${data ? `: ${JSON.stringify(data)}` : ""}\n`;
