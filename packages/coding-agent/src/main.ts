@@ -21,6 +21,7 @@ import { SessionManager } from "./core/session-manager.js";
 import { SettingsManager } from "./core/settings-manager.js";
 import { printTimings, time } from "./core/timings.js";
 import { allTools } from "./core/tools/index.js";
+import { checkForUpdates } from "./utils/version-check.js";
 import { runMigrations, showDeprecationWarnings } from "./migrations.js";
 import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.js";
 import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.js";
@@ -433,6 +434,10 @@ export async function main(args: string[]) {
 		if (offlineMode) {
 			process.env.PI_OFFLINE = "1";
 			process.env.PI_SKIP_VERSION_CHECK = "1";
+		}
+		// Check for updates (async, non-blocking)
+		if (!process.env.PI_SKIP_VERSION_CHECK) {
+			checkForUpdates().catch(() => {});
 		}
 		if (await handlePackageCommand(args)) {
 			return;
