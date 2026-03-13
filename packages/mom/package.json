@@ -21,7 +21,7 @@
 	"dependencies": {
 		"@anthropic-ai/sandbox-runtime": "^0.0.16",
 		"@mariozechner/pi-agent-core": "^0.59.0",
-		"@mariozechner/pi-ai": "^0.57.1",
+		"@mariozechner/pi-ai": "^0.59.0",
 		"openvibe": "file:../coding-agent",
 		"@sinclair/typebox": "^0.34.0",
 		"@slack/socket-mode": "^2.0.0",
