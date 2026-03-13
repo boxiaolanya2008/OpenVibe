@@ -26,6 +26,7 @@ export const BUILTIN_SLASH_COMMANDS: ReadonlyArray<BuiltinSlashCommand> = [
 	{ name: "compact", description: "Manually compact the session context" },
 	{ name: "resume", description: "Resume a different session" },
 	{ name: "reload", description: "Reload extensions, skills, prompts, and themes" },
+	{ name: "skills", description: "Browse and invoke available skills" },
 	{ name: "think", description: "Set thinking level (off/minimal/low/medium/high/xhigh)" },
 	{ name: "quit", description: "Quit pi" },
 ];

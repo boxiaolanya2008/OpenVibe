@@ -1,6 +1,6 @@
 {
 	"name": "openvibe",
-	"version": "0.59.0",
+	"version": "0.60.0",
 	"description": "OpenVibe - AI Coding Assistant CLI",
 	"type": "module",
 	"piConfig": {

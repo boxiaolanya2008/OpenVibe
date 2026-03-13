@@ -1,52 +1,224 @@
 # OpenVibe
 
-OpenVibe 是一个专业的 AI 编程助手，为开发者提供智能的代码编辑、文件管理和项目协作功能。
+[**中文文档**](./README_CN.md) | English
 
-## 安装
+OpenVibe is a professional AI coding assistant that provides intelligent code editing, file management, and project collaboration features for developers.
+
+## Installation
 
 ```bash
 npm install -g openvibe
 ```
 
-## 快速开始
+## Quick Start
 
-### 首次配置
+### Initial Configuration
 
-运行 OpenVibe 后，系统将引导你完成初始配置：
+After running OpenVibe, the system will guide you through the initial setup:
 
 ```bash
 openvibe
 ```
 
-你需要提供：
-- **API 地址**: 你的 AI 服务接口地址
-- **API 密钥**: 访问 AI 服务的密钥
-- **模型名称**: 使用的 AI 模型名称
+You will need to provide:
+- **API URL**: Your AI service endpoint address
+- **API Key**: The key to access the AI service
+- **Model Name**: The AI model name to use
 
-### 基本用法
+### Basic Usage
 
 ```bash
-# 启动交互式会话
+# Start an interactive session
 openvibe
 
-# 直接执行指令
-openvibe "分析当前项目的代码结构"
+# Execute a command directly
+openvibe "Analyze the code structure of the current project"
 
-# 处理文件
-openvibe -f src/main.ts "优化这段代码"
+# Process files
+openvibe -f src/main.ts "Optimize this code"
 ```
 
-## 核心功能
+## Core Features
 
-- **智能代码编辑**: 基于 AI 的代码分析、重构和生成
-- **文件操作工具**: read、write、edit、bash、grep、find 等
-- **会话管理**: 保存和恢复对话历史
-- **扩展系统**: 自定义功能扩展
-- **交互式终端界面**: 直观的 TUI 操作体验
+### Built-in Tools
 
-## 配置说明
+OpenVibe includes the following built-in tools:
 
-配置文件位于 `~/.openvibe/config.json`：
+| Tool | Description |
+|------|-------------|
+| `read` | Read file contents (supports text and images) |
+| `write` | Write content to files (creates or overwrites) |
+| `edit` | Edit files with precise text replacement |
+| `bash` | Execute shell commands |
+| `grep` | Search file contents with regex support |
+| `find` | Find files by name pattern |
+| `ls` | List directory contents |
+| `truncate` | Truncate large outputs |
+
+### Slash Commands
+
+OpenVibe provides powerful slash commands for session management:
+
+| Command | Description |
+|---------|-------------|
+| `/settings` | Open settings menu |
+| `/export` | Export session to HTML file |
+| `/share` | Share session as a secret GitHub gist |
+| `/copy` | Copy last agent message to clipboard |
+| `/name` | Set session display name |
+| `/session` | Show session info and stats |
+| `/changelog` | Show changelog entries |
+| `/hotkeys` | Show all keyboard shortcuts |
+| `/fork` | Create a new fork from a previous message |
+| `/tree` | Navigate session tree (switch branches) |
+| `/new` | Start a new session |
+| `/compact` | Manually compact the session context |
+| `/resume` | Resume a different session |
+| `/reload` | Reload extensions, skills, prompts, and themes |
+| `/skills` | Browse and invoke available skills |
+| `/think` | Set thinking level (off/minimal/low/medium/high/xhigh) |
+| `/quit` | Quit OpenVibe |
+
+### Session Management
+
+- **Auto-save**: Sessions are automatically saved in JSONL format
+- **Resume**: Continue previous conversations anytime
+- **Fork**: Create branches from any point in the conversation
+- **Tree Navigation**: Navigate and switch between conversation branches
+- **History**: View and manage all historical sessions
+
+### Context Compaction
+
+Automatically compresses conversation history to save tokens:
+- **Auto-compaction**: Triggers when context overflows
+- **Manual compaction**: Use `/compact` command
+- **Smart summarization**: Preserves important information
+- **Token budget management**: Configurable reserve and keep tokens
+
+### Skills System
+
+Skills are specialized knowledge files that provide expert guidance:
+- Load domain-specific expertise
+- Support for user, project, and path-scoped skills
+- Markdown format with frontmatter
+- Compatible with Claude skills directory
+
+**Supported Skill Directories:**
+
+| Location | Type | Priority |
+|----------|------|----------|
+| `~/.openvibe/skills/` | Global | High |
+| `~/.agents/skills/` | Global (Agent Skills standard) | Medium |
+| `~/.claude/skills/` | Global (Claude compatible) | Medium |
+| `~/.codex/skills/` | Global (Codex compatible) | Medium |
+| `.openvibe/skills/` | Project | High |
+| `.agents/skills/` | Project | Medium |
+| `.claude/skills/` | Project | Medium |
+
+**Usage:**
+```bash
+# List and select skills interactively
+/skills
+
+# Invoke a specific skill directly
+/skill:code-review
+```
+
+### Prompt Templates
+
+Create reusable prompt templates:
+- User and project-scoped templates
+- Argument substitution support (`$1`, `$2`, `$ARGUMENTS`)
+- Markdown format with description frontmatter
+- Quick access via `/template-name` syntax
+
+### Extension System
+
+Build powerful TypeScript extensions:
+
+```typescript
+import { defineExtension } from 'openvibe';
+
+export default defineExtension({
+  name: 'my-extension',
+  setup({ onMessage, registerTool, registerCommand }) {
+    // Subscribe to messages
+    onMessage((message) => {
+      console.log('Received:', message);
+    });
+    
+    // Register custom tools
+    registerTool({
+      name: 'myTool',
+      description: 'A custom tool',
+      parameters: { ... },
+      handler: async (args) => { ... }
+    });
+    
+    // Register commands
+    registerCommand({
+      name: 'myCommand',
+      description: 'A custom command',
+      handler: async (args) => { ... }
+    });
+  }
+});
+```
+
+Extension capabilities:
+- Register LLM-callable tools
+- Register slash commands and keyboard shortcuts
+- Create custom UI components
+- Subscribe to agent lifecycle events
+- Access session and model information
+
+### Theme System
+
+Customize the appearance:
+- Built-in dark and light themes
+- Custom theme support via JSON files
+- Export colors for HTML generation
+- Dynamic theme switching
+
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Esc` | Interrupt current operation |
+| `Ctrl+C` | Clear input / Cancel |
+| `Ctrl+D` | Exit |
+| `Ctrl+Z` | Suspend |
+| `Shift+Tab` | Cycle thinking level |
+| `Ctrl+P` | Cycle model forward |
+| `Ctrl+L` | Model selector |
+| `Ctrl+O` | Expand/collapse tools |
+| `Ctrl+T` | Toggle thinking block |
+| `Ctrl+G` | Open external editor |
+| `Alt+Enter` | Queue follow-up message |
+| `Ctrl+V` | Paste image from clipboard |
+
+### HTML Export
+
+Export sessions to standalone HTML files:
+- Full conversation history with syntax highlighting
+- Tool execution details
+- Customizable themes
+- Share via GitHub Gist
+
+### Additional Features
+
+- **1M Context Window**: Full support for 1 million token context window via provider configuration
+- **Multi-GPU Support**: Distribute workloads across GPUs
+- **Auto Retry**: Automatic retry on API failures with configurable delays
+- **Image Support**: Paste and process images from clipboard
+- **Git Integration**: Display current branch in status bar
+- **RPC Mode**: Remote procedure call support for integration
+- **Onboarding Wizard**: Guided initial setup
+- **Response Acceleration**: Streaming optimizations for faster responses
+
+## Configuration
+
+Configuration file located at `~/.openvibe/config.json`:
 
 ```json
 {
@@ -56,104 +228,101 @@ openvibe -f src/main.ts "优化这段代码"
 }
 ```
 
-## 命令行选项
+### Settings
+
+Global and project-level settings in `~/.openvibe/settings.json`:
+
+```json
+{
+  "theme": "dark",
+  "defaultThinkingLevel": "medium",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384,
+    "keepRecentTokens": 20000
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3
+  },
+  "enableSkillCommands": true
+}
+```
+
+### 1M Context Window Configuration
+
+OpenVibe supports models with 1 million token context window through an independent **Context Architecture**:
+
+```typescript
+// Using the Context Architecture API
+import { 
+  getContextProviderRegistry, 
+  enhanceModelContext,
+  LargeContextProvider 
+} from 'openvibe';
+
+// Enhance any model with large context
+const enhancedModel = enhanceModelContext(model);
+
+// Or register a custom model with 1M context
+const provider = new LargeContextProvider();
+provider.registerCustomModel('my-custom-model', {
+  contextWindow: 1000000,
+  maxTokens: 65536,
+  supportsVision: true
+});
+```
+
+**Supported Models with 1M Context:**
+- Google Gemini 1.5 Pro/Flash
+- Google Gemini 2.0 Flash/Pro
+- Alibaba Qwen-Max
+- Moonshot Kimi (128K)
+
+**Architecture Components:**
+- `IContextProvider` - Interface for custom context providers
+- `LargeContextProvider` - Built-in provider with 50+ model definitions
+- `ContextProviderRegistry` - Central registry for managing providers
+- `ContextManager` - Configuration-based alternative API
+```
+
+## Command Line Options
 
 ```
 Usage: openvibe [options] [prompt]
 
 Options:
-  -f, --file <path>       包含文件路径
-  -c, --context <path>    添加上下文文件/目录
-  --no-onboarding         跳过引导配置
-  -h, --help             显示帮助信息
-  -v, --version          显示版本号
+  -f, --file <path>       Include file path
+  -c, --context <path>    Add context file/directory
+  --no-onboarding         Skip onboarding configuration
+  -h, --help              Display help information
+  -v, --version           Display version number
 ```
 
-## 工具功能
+## Documentation
 
-OpenVibe 内置以下工具：
+- [Extension Development Guide](docs/extensions.md)
+- [SDK Documentation](docs/sdk.md)
+- [Theme Customization](docs/themes.md)
+- [Keybinding Configuration](docs/keybindings.md)
+- [Skills System](docs/skills.md)
+- [Prompt Templates](docs/prompt-templates.md)
+- [Session Management](docs/session.md)
+- [Context Compaction](docs/compaction.md)
+- [Custom Providers](docs/custom-provider.md)
+- [TUI Components](docs/tui.md)
+- [RPC Integration](docs/rpc.md)
 
-| 工具 | 描述 |
-|------|------|
-| `read` | 读取文件内容 |
-| `write` | 写入文件内容 |
-| `edit` | 编辑文件（精确替换） |
-| `bash` | 执行 shell 命令 |
-| `grep` | 搜索文件内容 |
-| `find` | 查找文件 |
-| `ls` | 列出目录内容 |
-
-## 交互式快捷键
-
-在交互模式下：
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl+C` | 退出程序 |
-| `Ctrl+D` | 结束输入 |
-| `Ctrl+L` | 清屏 |
-| `Tab` | 自动补全 |
-
-## 扩展开发
-
-OpenVibe 支持 TypeScript 扩展，示例：
-
-```typescript
-import { defineExtension } from 'openvibe';
-
-export default defineExtension({
-  name: 'my-extension',
-  setup({ onMessage }) {
-    onMessage((message) => {
-      console.log('收到消息:', message);
-    });
-  }
-});
-```
-
-## 历史记录
-
-OpenVibe 自动保存所有会话历史，方便你随时回顾和继续之前的对话。
-
-### 查看历史
-
-```bash
-# 列出所有历史会话
-openvibe --history
-
-# 查看特定会话
-openvibe --session <session-id>
-```
-
-### 历史文件位置
-
-历史记录保存在 `~/.openvibe/sessions/` 目录下，每个会话以 JSONL 格式存储。
-
-### 快捷键
-
-在交互模式下管理历史：
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl+R` | 打开历史会话选择器 |
-| `Ctrl+S` | 保存当前会话 |
-| `Ctrl+Shift+S` | 重命名当前会话 |
-
-- [扩展开发指南](docs/extensions.md)
-- [SDK 文档](docs/sdk.md)
-- [主题定制](docs/themes.md)
-- [快捷键配置](docs/keybindings.md)
-
-## 系统要求
+## System Requirements
 
 - Node.js >= 18.0.0
 - npm >= 9.0.0
 
-## 许可证
+## License
 
 MIT
 
-## 相关链接
+## Links
 
-- [npm 包](https://www.npmjs.com/package/openvibe)
-- [问题反馈](https://github.com/boxiaolanya2008/openvibe/issues)
+- [npm Package](https://www.npmjs.com/package/openvibe)
+- [Issue Tracker](https://github.com/boxiaolanya2008/openvibe/issues)

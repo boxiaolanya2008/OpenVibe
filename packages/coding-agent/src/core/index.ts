@@ -37,6 +37,36 @@ export {
 export { type BashExecutorOptions, type BashResult, executeBash, executeBashWithOperations } from "./bash-executor.js";
 export type { CompactionResult } from "./compaction/index.js";
 export { createEventBus, type EventBus, type EventBusController } from "./event-bus.js";
+
+// Context Architecture - Third-party large context support (1M tokens)
+export {
+	// Interfaces
+	type IContextProvider,
+	type IModelContextConfig,
+	type IProcessedContext,
+	type IOverflowResult,
+	type IContextProviderRegistry,
+	type IContextEnhancement,
+	// Main implementation
+	LargeContextProvider,
+	getLargeContextProvider,
+	// Registry
+	ContextProviderRegistry,
+	getContextProviderRegistry,
+	enhanceModelContext,
+	getModelContextConfig,
+	initializeContextProviders,
+	// Context Manager
+	ContextManager,
+	ContextMiddleware,
+	getContextManager,
+	initializeContextManager,
+	type ContextConfig,
+	type ProviderContextConfig,
+	type GlobalContextConfig,
+	type ContextStats,
+} from "./context-architecture.js";
+
 export {
 	type AgentEndEvent,
 	type AgentStartEvent,

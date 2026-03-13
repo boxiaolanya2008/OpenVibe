@@ -518,7 +518,7 @@ function generateSkillName(timestamp: number): string {
 }
 
 function saveSummaryAsSkill(summary: string, skillName: string, cwd: string): string {
-	const skillsDir = join(cwd, "history-skill", skillName);
+	const skillsDir = join(cwd, ".history-skill", skillName);
 	if (!existsSync(skillsDir)) {
 		mkdirSync(skillsDir, { recursive: true });
 	}

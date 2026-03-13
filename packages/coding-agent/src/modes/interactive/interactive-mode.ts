@@ -37,7 +37,6 @@ import {
 	getAuthPath,
 	getDebugLogPath,
 	getShareViewerUrl,
-	getUpdateInstruction,
 	VERSION,
 } from "../../config.js";
 import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.js";
@@ -80,6 +79,7 @@ import { appKey, appKeyHint, editorKey, keyHint, rawKeyHint } from "./components
 import { SessionSelectorComponent } from "./components/session-selector.js";
 import { SettingsSelectorComponent } from "./components/settings-selector.js";
 import { SkillInvocationMessageComponent } from "./components/skill-invocation-message.js";
+import { SkillsSelectorComponent } from "./components/skills-selector.js";
 import { ToolExecutionComponent } from "./components/tool-execution.js";
 import { TreeSelectorComponent } from "./components/tree-selector.js";
 import { UserMessageComponent } from "./components/user-message.js";
@@ -158,6 +158,7 @@ export class InteractiveMode {
 	private compactionQueuedMessages: CompactionQueuedMessage[] = [];
 	private shutdownRequested = false;
 	private extensionSelector: ExtensionSelectorComponent | undefined = undefined;
+	private skillsSelector: SkillsSelectorComponent | undefined = undefined;
 	private extensionInput: ExtensionInputComponent | undefined = undefined;
 	private extensionEditor: ExtensionEditorComponent | undefined = undefined;
 	private extensionTerminalInputUnsubscribers = new Set<() => void>();
@@ -347,11 +348,6 @@ export class InteractiveMode {
 	}
 	async run(): Promise<void> {
 		await this.init();
-		this.checkForNewVersion().then((newVersion) => {
-			if (newVersion) {
-				this.showNewVersionNotification(newVersion);
-			}
-		});
 		this.checkTmuxKeyboardSetup().then((warning) => {
 			if (warning) {
 				this.showWarning(warning);
@@ -384,23 +380,6 @@ export class InteractiveMode {
 				const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
 				this.showError(errorMessage);
 			}
-		}
-	}
-	private async checkForNewVersion(): Promise<string | undefined> {
-		if (process.env.PI_SKIP_VERSION_CHECK || process.env.PI_OFFLINE) return undefined;
-		try {
-			const response = await fetch("https://registry.npmjs.org/@mariozechner/pi/latest", {
-				signal: AbortSignal.timeout(10000),
-			});
-			if (!response.ok) return undefined;
-			const data = (await response.json()) as { version?: string };
-			const latestVersion = data.version;
-			if (latestVersion && latestVersion !== this.version) {
-				return latestVersion;
-			}
-			return undefined;
-		} catch {
-			return undefined;
 		}
 	}
 	private async checkTmuxKeyboardSetup(): Promise<string | undefined> {
@@ -1512,6 +1491,11 @@ export class InteractiveMode {
 				await this.handleReloadCommand();
 				return;
 			}
+			if (text === "/skills") {
+				this.showSkillsSelector();
+				this.editor.setText("");
+				return;
+			}
 			if (text === "/debug") {
 				this.handleDebugCommand();
 				this.editor.setText("");
@@ -2180,23 +2164,6 @@ export class InteractiveMode {
 	showWarning(warningMessage: string): void {
 		this.chatContainer.addChild(new Spacer(1));
 		this.chatContainer.addChild(new Text(theme.fg("warning", `Warning: ${warningMessage}`), 1, 0));
-		this.ui.requestRender();
-	}
-	showNewVersionNotification(newVersion: string): void {
-		const action = theme.fg("accent", getUpdateInstruction("@mariozechner/pi-coding-agent"));
-		const updateInstruction = theme.fg("muted", `New version ${newVersion} is available. `) + action;
-		const changelogUrl = theme.fg("accent", "https://github.com/mariozechner/openvibe/blob/main/CHANGELOG.md");
-		const changelogLine = theme.fg("muted", "Changelog: ") + changelogUrl;
-		this.chatContainer.addChild(new Spacer(1));
-		this.chatContainer.addChild(new DynamicBorder((text) => theme.fg("warning", text)));
-		this.chatContainer.addChild(
-			new Text(
-				`${theme.bold(theme.fg("warning", "Update Available"))}\n${updateInstruction}\n${changelogLine}`,
-				1,
-				0,
-			),
-		);
-		this.chatContainer.addChild(new DynamicBorder((text) => theme.fg("warning", text)));
 		this.ui.requestRender();
 	}
 	private getAllQueuedMessages(): { steering: string[]; followUp: string[] } {
@@ -3234,6 +3201,55 @@ export class InteractiveMode {
 		}
 		void this.flushCompactionQueue({ willRetry: false });
 		return result;
+	}
+	private showSkillsSelector(): void {
+		const skills = this.session.resourceLoader.getSkills().skills;
+
+		this.showSelector((done) => {
+			const selector = new SkillsSelectorComponent(skills, {
+				onSelect: async (skill: { name: string; filePath: string; description: string }) => {
+					done();
+
+					// Show skill invocation message
+					this.chatContainer.addChild(new Spacer(1));
+					this.chatContainer.addChild(
+						new Text(
+							theme.fg("accent", `▶ Invoking skill: `) + theme.fg("muted", skill.name),
+							1,
+							0,
+						),
+					);
+					this.chatContainer.addChild(
+						new Text(theme.fg("dim", `  Location: ${skill.filePath}`), 1, 0),
+					);
+					this.ui.requestRender();
+
+					// Read the skill file content and send as context
+					try {
+						const fs = await import("node:fs/promises");
+						const skillContent = await fs.readFile(skill.filePath, "utf-8");
+
+						// Extract the content after frontmatter
+						const frontmatterEnd = skillContent.indexOf("---", 4);
+						const content = frontmatterEnd !== -1
+							? skillContent.slice(frontmatterEnd + 3).trim()
+							: skillContent;
+
+						// Create a prompt that includes the skill
+						const prompt = `<skill name="${skill.name}" location="${skill.filePath}">\n${content}\n</skill>\n\nPlease apply the "${skill.name}" skill to help me.`;
+
+						// Send the skill to the agent
+						await this.session.prompt(prompt);
+					} catch (error) {
+						this.showError(`Failed to load skill "${skill.name}": ${error instanceof Error ? error.message : "Unknown error"}`);
+					}
+				},
+				onCancel: () => {
+					done();
+				},
+			});
+			return { component: selector, focus: selector };
+		});
 	}
 	stop(): void {
 		if (this.loadingAnimation) {

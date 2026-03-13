@@ -11,9 +11,32 @@ const MAX_DESCRIPTION_LENGTH = 1024;
 const IGNORE_FILE_NAMES = [".gitignore", ".ignore", ".fdignore"];
 type IgnoreMatcher = ReturnType<typeof ignore>;
 
-function getClaudeSkillsPath(): string {
-	return join(homedir(), ".claude", "skills");
+/**
+ * Get all global skill directories to search.
+ * Returns paths in priority order (first found wins).
+ */
+function getGlobalSkillPaths(): Array<{ path: string; source: string }> {
+	const home = homedir();
+	return [
+		{ path: join(home, CONFIG_DIR_NAME, "skills"), source: "user" },       // ~/.openvibe/skills
+		{ path: join(home, ".agents", "skills"), source: "agents" },           // ~/.agents/skills (Agent Skills standard)
+		{ path: join(home, ".claude", "skills"), source: "claude" },           // ~/.claude/skills (Claude compatibility)
+		{ path: join(home, ".codex", "skills"), source: "codex" },             // ~/.codex/skills (OpenAI Codex compatibility)
+	];
 }
+
+/**
+ * Get all project-level skill directories to search.
+ * Returns paths in priority order.
+ */
+function getProjectSkillPaths(cwd: string): Array<{ path: string; source: string }> {
+	return [
+		{ path: resolve(cwd, CONFIG_DIR_NAME, "skills"), source: "project" },  // .openvibe/skills
+		{ path: resolve(cwd, ".agents", "skills"), source: "project-agents" }, // .agents/skills
+		{ path: resolve(cwd, ".claude", "skills"), source: "project-claude" }, // .claude/skills
+	];
+}
+
 function toPosixPath(p: string): string {
 	return p.split(sep).join("/");
 }
@@ -309,11 +332,17 @@ export function loadSkills(options: LoadSkillsOptions = {}): LoadSkillsResult {
 		}
 	}
 	if (includeDefaults) {
-		addSkills(loadSkillsFromDirInternal(join(resolvedAgentDir, "skills"), "user", true));
-		addSkills(loadSkillsFromDirInternal(resolve(cwd, CONFIG_DIR_NAME, "skills"), "project", true));
-		const claudeSkillsPath = getClaudeSkillsPath();
-		if (existsSync(claudeSkillsPath)) {
-			addSkills(loadSkillsFromDirInternal(claudeSkillsPath, "claude", true));
+		// Load from all global skill directories
+		for (const { path, source } of getGlobalSkillPaths()) {
+			if (existsSync(path)) {
+				addSkills(loadSkillsFromDirInternal(path, source, true));
+			}
+		}
+		// Load from all project-level skill directories
+		for (const { path, source } of getProjectSkillPaths(cwd)) {
+			if (existsSync(path)) {
+				addSkills(loadSkillsFromDirInternal(path, source, true));
+			}
 		}
 	}
 	const userSkillsDir = join(resolvedAgentDir, "skills");
