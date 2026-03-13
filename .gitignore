@@ -3,23 +3,16 @@ dist/
 *.log
 .DS_Store
 *.tsbuildinfo
-# packages/*/node_modules/
 packages/*/dist/
 packages/*/dist-chrome/
 packages/*/dist-firefox/
-
-# Environment
 .env
-
-# Editor files
 .vscode/
 .zed/
 .idea/
 *.swp
 *.swo
 *~
-
-# Package specific
 .npm/
 coverage/
 .nyc_output/
@@ -33,4 +26,6 @@ pi-*.html
 out.html
 packages/coding-agent/binaries/
 todo.md
-history-skill
+.history-skill/
+.openvibe/
+.claude/
