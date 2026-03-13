@@ -1,5 +1,5 @@
-import type { Skill } from "../../../core/skills.js";
 import { Container, SelectList, Spacer, Text } from "@mariozechner/pi-tui";
+import type { Skill } from "../../../core/skills.js";
 import { getSelectListTheme, theme } from "../theme/theme.js";
 
 export interface SkillsSelectorCallbacks {
@@ -11,10 +11,7 @@ export class SkillsSelectorComponent extends Container {
 	private selectList: SelectList;
 	private skills: Skill[];
 
-	constructor(
-		skills: Skill[],
-		callbacks: SkillsSelectorCallbacks,
-	) {
+	constructor(skills: Skill[], callbacks: SkillsSelectorCallbacks) {
 		super();
 		this.skills = skills;
 
@@ -45,11 +42,7 @@ export class SkillsSelectorComponent extends Container {
 			value: skill.name,
 		}));
 
-		this.selectList = new SelectList(
-			items,
-			Math.min(items.length, 15),
-			getSelectListTheme(),
-		);
+		this.selectList = new SelectList(items, Math.min(items.length, 15), getSelectListTheme());
 
 		this.selectList.onSelect = (item) => {
 			const skill = this.skills.find((s) => s.name === item.value);

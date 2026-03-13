@@ -11,8 +11,8 @@
  */
 
 import type { UserMessage } from "@mariozechner/pi-ai";
-import { type SessionManager, type SessionMessageEntry, SettingsManager } from "openvibe";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { type SessionManager, type SessionMessageEntry, SettingsManager } from "openvibe";
 import { dirname, join } from "path";
 
 // ============================================================================

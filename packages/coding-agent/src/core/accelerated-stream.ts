@@ -92,7 +92,7 @@ export class AcceleratedStream {
 		}
 		return finalMessage;
 	}
-	private async getFinalMessage(stream: AsyncGenerator<AssistantMessageEvent>): Promise<AssistantMessage> {
+	private async getFinalMessage(_stream: AsyncGenerator<AssistantMessageEvent>): Promise<AssistantMessage> {
 		return {} as AssistantMessage;
 	}
 	async processMultipleStreams<T>(
@@ -120,7 +120,7 @@ export class StreamMerger {
 		streams: Map<string, AsyncIterable<T>>,
 		options?: { bufferSize?: number },
 	): AsyncGenerator<{ source: string; data: T }, void, void> {
-		const bufferSize = options?.bufferSize ?? 100;
+		const _bufferSize = options?.bufferSize ?? 100;
 		const iterators = new Map<string, AsyncIterator<T>>();
 		for (const [name, stream] of streams) {
 			iterators.set(name, stream[Symbol.asyncIterator]());

@@ -14,7 +14,7 @@
  */
 
 import { readFileSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname } from "node:path";
 import type {
 	Agent,
 	AgentEvent,
@@ -28,6 +28,8 @@ import { isContextOverflow, modelsAreEqual, resetApiProviders, supportsXhigh } f
 import { theme } from "../modes/interactive/theme/theme.js";
 import { stripFrontmatter } from "../utils/frontmatter.js";
 import { sleep } from "../utils/sleep.js";
+import type { AgentMode } from "./agent-modes.js";
+import { AGENT_MODES } from "./agent-modes.js";
 import { type BashResult, executeBash as executeBashCommand, executeBashWithOperations } from "./bash-executor.js";
 import {
 	type CompactionResult,
@@ -79,8 +81,6 @@ import { BUILTIN_SLASH_COMMANDS, type SlashCommandInfo, type SlashCommandLocatio
 import { buildSystemPrompt } from "./system-prompt.js";
 import type { BashOperations } from "./tools/bash.js";
 import { createAllTools } from "./tools/index.js";
-import type { AgentMode } from "./agent-modes.js";
-import { AGENT_MODES, getModeThinkingLevel, getModeTools } from "./agent-modes.js";
 
 // ============================================================================
 // Skill Block Parsing
@@ -669,7 +669,7 @@ export class AgentSession {
 	 * Updates thinking level based on model capabilities.
 	 */
 	async setModel(model: Model<any>): Promise<void> {
-		const previousModel = this.agent.state.model;
+		const _previousModel = this.agent.state.model;
 		this.agent.setModel(model);
 
 		let effectiveThinking = this.thinkingLevel;
@@ -1438,16 +1438,6 @@ export class AgentSession {
 	 */
 	supportsThinking(): boolean {
 		return !!this.model?.reasoning;
-	}
-
-	private _getThinkingLevelForModelSwitch(explicitLevel?: ThinkingLevel): ThinkingLevel {
-		if (explicitLevel !== undefined) {
-			return explicitLevel;
-		}
-		if (!this.supportsThinking()) {
-			return this.settingsManager.getDefaultThinkingLevel() ?? DEFAULT_THINKING_LEVEL;
-		}
-		return this.thinkingLevel;
 	}
 
 	private _clampThinkingLevel(level: ThinkingLevel, availableLevels: ThinkingLevel[]): ThinkingLevel {

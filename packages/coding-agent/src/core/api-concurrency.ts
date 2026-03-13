@@ -1,4 +1,4 @@
-import type { Api, AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
 
 interface PendingRequest {
 	id: string;
@@ -26,7 +26,7 @@ class ConcurrencyManager {
 		this.maxConcurrent = maxConcurrent;
 	}
 	updateConcurrency(newConcurrency: number): void {
-		const old = this.maxConcurrent;
+		const _old = this.maxConcurrent;
 		this.maxConcurrent = Math.max(1, newConcurrency);
 		this.processQueue();
 	}
@@ -56,7 +56,7 @@ class ConcurrencyManager {
 			this.processQueue();
 		}
 	}
-	private async waitForSlot(requestId: string, signal?: AbortSignal): Promise<void> {
+	private async waitForSlot(_requestId: string, signal?: AbortSignal): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const checkQueue = () => {
 				if (this.activeRequests.size < this.maxConcurrent) {
@@ -179,7 +179,7 @@ export class APIParallelExecutor {
 				)
 				.then((result) => ({ index, result }));
 		});
-		const remaining = new Set(promises.map((p, i) => i));
+		const remaining = new Set(promises.map((_p, i) => i));
 		while (remaining.size > 0) {
 			if (options?.signal?.aborted) {
 				throw new Error("Stream batch aborted");

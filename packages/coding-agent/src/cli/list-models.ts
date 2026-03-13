@@ -1,4 +1,3 @@
-import type { Api, Model } from "@mariozechner/pi-ai";
 import type { ModelRegistry } from "../core/model-registry.js";
 import { loadUserConfig } from "../core/user-config.js";
 

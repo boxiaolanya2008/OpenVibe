@@ -5,38 +5,34 @@
  * @module context-architecture
  */
 
+// Context Manager (alternative API)
+export {
+	type ContextConfig,
+	ContextManager,
+	ContextMiddleware,
+	type ContextStats,
+	type GlobalContextConfig,
+	getContextManager,
+	initializeContextManager,
+	LARGE_CONTEXT_MODELS,
+	type ProviderContextConfig,
+} from "./context-manager.js";
 // Core interfaces
 export type {
-	IContextProvider,
-	IModelContextConfig,
-	IProcessedContext,
-	IOverflowResult,
-	IContextProviderRegistry,
 	IContextEnhancement,
+	IContextProvider,
+	IContextProviderRegistry,
+	IModelContextConfig,
+	IOverflowResult,
+	IProcessedContext,
 } from "./context-provider-interface.js";
-
-// Main implementation
-export { LargeContextProvider, getLargeContextProvider } from "./large-context-provider.js";
-export { LARGE_CONTEXT_DEFINITIONS } from "./large-context-provider.js";
-
 // Registry
 export {
 	ContextProviderRegistry,
-	getContextProviderRegistry,
 	enhanceModelContext,
+	getContextProviderRegistry,
 	getModelContextConfig,
 	initializeContextProviders,
 } from "./context-provider-registry.js";
-
-// Context Manager (alternative API)
-export {
-	ContextManager,
-	ContextMiddleware,
-	getContextManager,
-	initializeContextManager,
-	type ContextConfig,
-	type ProviderContextConfig,
-	type GlobalContextConfig,
-	type ContextStats,
-	LARGE_CONTEXT_MODELS,
-} from "./context-manager.js";
+// Main implementation
+export { getLargeContextProvider, LARGE_CONTEXT_DEFINITIONS, LargeContextProvider } from "./large-context-provider.js";

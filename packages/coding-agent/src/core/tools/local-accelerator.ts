@@ -1,6 +1,6 @@
 import { readFile as fsReadFile, writeFile as fsWriteFile, mkdir } from "fs/promises";
 import { cpus, freemem, totalmem } from "os";
-import { dirname, join } from "path";
+import { dirname } from "path";
 import { parallelExecute as parallelExec } from "./parallel-executor.js";
 
 interface SystemResources {
@@ -184,7 +184,7 @@ export async function parallelReplace(
 		const buffer = await acceleratedReadFile(path, false);
 		const content = buffer.toString("utf-8");
 		let matchCount = 0;
-		const newContent = content.replace(regex, (match) => {
+		const newContent = content.replace(regex, (_match) => {
 			matchCount++;
 			return replacement;
 		});

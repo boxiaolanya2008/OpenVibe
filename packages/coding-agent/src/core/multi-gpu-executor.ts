@@ -1,13 +1,5 @@
 import { cpus } from "os";
 
-interface Task<T = any, R = any> {
-	id: string;
-	data: T;
-	processor: (data: T) => Promise<R> | R;
-}
-interface AsyncPoolConfig {
-	concurrency: number;
-}
 interface GPUStats {
 	gpuCount: number;
 	cpuCores: number;

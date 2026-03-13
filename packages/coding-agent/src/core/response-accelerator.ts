@@ -1,10 +1,5 @@
 import type { AssistantMessage, AssistantMessageEvent, Model } from "@mariozechner/pi-ai";
 
-interface StreamBuffer {
-	chunks: string[];
-	complete: boolean;
-	error?: Error;
-}
 interface AcceleratedStreamOptions {
 	prefetch?: boolean;
 	bufferSize?: number;
@@ -43,7 +38,6 @@ export class ResponseBuffer {
 export class StreamingAccelerator {
 	private activeBuffer: ResponseBuffer = new ResponseBuffer();
 	private backBuffer: ResponseBuffer = new ResponseBuffer();
-	private isProcessing = false;
 	async *streamChunks(
 		generator: AsyncGenerator<AssistantMessageEvent>,
 		options: AcceleratedStreamOptions = {},

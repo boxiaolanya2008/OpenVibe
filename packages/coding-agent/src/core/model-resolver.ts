@@ -15,7 +15,7 @@ export class ModelResolver {
 
 	constructor(
 		private registry: ModelRegistry,
-		private requestedModelId?: string,
+		_requestedModelId?: string,
 		private requestedThinkingLevel?: string,
 	) {
 		this.resolveThinkingLevel();

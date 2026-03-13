@@ -5,9 +5,9 @@
 
 import type { Api, Model } from "@mariozechner/pi-ai";
 import type {
+	IContextEnhancement,
 	IContextProvider,
 	IContextProviderRegistry,
-	IContextEnhancement,
 	IModelContextConfig,
 } from "./context-provider-interface.js";
 import { getLargeContextProvider, LargeContextProvider } from "./large-context-provider.js";

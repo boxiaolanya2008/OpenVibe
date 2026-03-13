@@ -5,10 +5,10 @@
 
 import type { ThinkingLevel } from "@mariozechner/pi-agent-core";
 import { getDocsPath, getExamplesPath, getReadmePath } from "../config.js";
-import { applyBranding } from "./branded-ai.js";
-import { formatSkillsForPrompt, type Skill } from "./skills.js";
 import type { AgentMode } from "./agent-modes.js";
 import { getModePromptAddition, getModeTools } from "./agent-modes.js";
+import { applyBranding } from "./branded-ai.js";
+import { formatSkillsForPrompt, type Skill } from "./skills.js";
 
 const toolDescriptions: Record<string, string> = {
 	read: "Read file contents (supports text and images)",
@@ -97,12 +97,15 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): strin
 
 	// Build tools list
 	const tools = effectiveTools;
-	const toolsTable = tools.length > 0
-		? tools.map(name => {
-			const desc = toolSnippets?.[name] ?? toolDescriptions[name] ?? name;
-			return `| \`${name}\` | ${desc} |`;
-		}).join("\n")
-		: "| (no tools available) | |";
+	const toolsTable =
+		tools.length > 0
+			? tools
+					.map((name) => {
+						const desc = toolSnippets?.[name] ?? toolDescriptions[name] ?? name;
+						return `| \`${name}\` | ${desc} |`;
+					})
+					.join("\n")
+			: "| (no tools available) | |";
 
 	// Build guidelines
 	const guidelinesList: string[] = [];
@@ -144,7 +147,7 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions = {}): strin
 		if (normalized.length > 0) addGuideline(normalized);
 	}
 
-	const guidelinesText = guidelinesList.map(g => `- ${g}`).join("\n");
+	const guidelinesText = guidelinesList.map((g) => `- ${g}`).join("\n");
 
 	// Thinking level section
 	const thinkingPrompt = thinkingLevel && thinkingLevel !== "off" ? THINKING_LEVEL_PROMPTS[thinkingLevel] : "";

@@ -1,9 +1,9 @@
-import type { AssistantMessage, AssistantMessageEvent, Context, Message, TextContent } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, TextContent } from "@mariozechner/pi-ai";
 export interface BrandedContext extends Context {
 	brandName: string;
 	originalModel?: string;
 }
-const PROTECTED_BRAND_KEYWORDS = ["OpenVibe", "openvibe", "OPENVIBE"];
+const _PROTECTED_BRAND_KEYWORDS = ["OpenVibe", "openvibe", "OPENVIBE"];
 const FORBIDDEN_MODEL_NAMES = [
 	"Claude",
 	"claude",

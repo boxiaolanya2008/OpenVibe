@@ -87,7 +87,7 @@ export async function executeToolsParallel(
 	const results = await parallelExecute(toolCalls, (tc) => executeSingleTool(tc, signal), {
 		concurrency: maxConcurrency,
 	});
-	results.forEach((result) => onProgress?.(result));
+	for (const result of results) onProgress?.(result);
 	return results.map(toToolResultMessage);
 }
 function toToolResultMessage(result: ToolExecutionResult): ToolResultMessage {

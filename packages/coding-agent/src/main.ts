@@ -1,4 +1,4 @@
-import { type ImageContent, modelsAreEqual, supportsXhigh } from "@mariozechner/pi-ai";
+import { type ImageContent, supportsXhigh } from "@mariozechner/pi-ai";
 import chalk from "chalk";
 import fs from "fs";
 import { createInterface } from "readline";
@@ -8,7 +8,6 @@ import { processFileArguments } from "./cli/file-processor.js";
 import { listModels } from "./cli/list-models.js";
 import { selectSession } from "./cli/session-picker.js";
 import { APP_NAME, getAgentDir, getModelsPath, VERSION } from "./config.js";
-import { globalAcceleratedClient } from "./core/accelerated-client.js";
 import { AuthStorage } from "./core/auth-storage.js";
 import { exportFromFile } from "./core/export-html/index.js";
 import type { LoadExtensionsResult } from "./core/extensions/index.js";
@@ -27,7 +26,7 @@ import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.js";
 import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.js";
 
 function debugLog(stage: string, message: string, data?: any) {
-	const logLine = `[${new Date().toISOString()}] [${stage}] ${message}${data ? ": " + JSON.stringify(data) : ""}\n`;
+	const logLine = `[${new Date().toISOString()}] [${stage}] ${message}${data ? `: ${JSON.stringify(data)}` : ""}\n`;
 	fs.appendFileSync("debug.log", logLine);
 }
 async function readPipedStdin(): Promise<string | undefined> {
@@ -373,8 +372,8 @@ async function createSessionManager(
 function buildSessionOptions(
 	parsed: Args,
 	sessionManager: SessionManager | undefined,
-	modelRegistry: ModelRegistry,
-	settingsManager: SettingsManager,
+	_modelRegistry: ModelRegistry,
+	_settingsManager: SettingsManager,
 ): { options: CreateAgentSessionOptions; cliThinkingFromModel: boolean } {
 	const options: CreateAgentSessionOptions = {};
 	const cliThinkingFromModel = false;
@@ -573,7 +572,7 @@ export async function main(args: string[]) {
 			console.error(chalk.red("--api-key is deprecated. Please configure your API key during onboarding."));
 			process.exit(1);
 		}
-		const { session, modelFallbackMessage } = await createAgentSession(sessionOptions);
+		const { session } = await createAgentSession(sessionOptions);
 		if (!isInteractive && !session.model) {
 			console.error(chalk.red("No model configured."));
 			console.error(chalk.yellow("\nPlease run onboarding to configure your model:"));

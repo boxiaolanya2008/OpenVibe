@@ -1,4 +1,4 @@
-import type { Api, AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Context, Model } from "@mariozechner/pi-ai";
 import { APIParallelExecutor } from "./api-concurrency.js";
 import { accelerateStream } from "./response-accelerator.js";
 

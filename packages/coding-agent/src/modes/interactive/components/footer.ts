@@ -10,7 +10,8 @@ function sanitizeStatusText(text: string): string {
 		.trim();
 }
 export class FooterComponent implements Component {
-	private autoCompactEnabled = true;
+	// biome-ignore lint/correctness/noUnusedPrivateClassMembers: used by interactive-mode.ts for future auto-compact indicator
+	private autoCompactEnabled: boolean = false;
 	constructor(
 		private session: AgentSession,
 		private footerData: ReadonlyFooterDataProvider,

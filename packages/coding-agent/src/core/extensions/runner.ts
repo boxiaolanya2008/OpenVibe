@@ -224,7 +224,7 @@ export class ExtensionRunner {
 		this.getContextUsageFn = contextActions.getContextUsage;
 		this.compactFn = contextActions.compact;
 		this.getSystemPromptFn = contextActions.getSystemPrompt;
-		for (const { name, config } of this.runtime.pendingProviderRegistrations) {
+		for (const { name } of this.runtime.pendingProviderRegistrations) {
 			console.warn(
 				`Extension attempted to register provider "${name}", but custom providers are disabled. Only the user-configured model is used.`,
 			);

@@ -18,10 +18,10 @@ type IgnoreMatcher = ReturnType<typeof ignore>;
 function getGlobalSkillPaths(): Array<{ path: string; source: string }> {
 	const home = homedir();
 	return [
-		{ path: join(home, CONFIG_DIR_NAME, "skills"), source: "user" },       // ~/.openvibe/skills
-		{ path: join(home, ".agents", "skills"), source: "agents" },           // ~/.agents/skills (Agent Skills standard)
-		{ path: join(home, ".claude", "skills"), source: "claude" },           // ~/.claude/skills (Claude compatibility)
-		{ path: join(home, ".codex", "skills"), source: "codex" },             // ~/.codex/skills (OpenAI Codex compatibility)
+		{ path: join(home, CONFIG_DIR_NAME, "skills"), source: "user" }, // ~/.openvibe/skills
+		{ path: join(home, ".agents", "skills"), source: "agents" }, // ~/.agents/skills (Agent Skills standard)
+		{ path: join(home, ".claude", "skills"), source: "claude" }, // ~/.claude/skills (Claude compatibility)
+		{ path: join(home, ".codex", "skills"), source: "codex" }, // ~/.codex/skills (OpenAI Codex compatibility)
 	];
 }
 
@@ -31,7 +31,7 @@ function getGlobalSkillPaths(): Array<{ path: string; source: string }> {
  */
 function getProjectSkillPaths(cwd: string): Array<{ path: string; source: string }> {
 	return [
-		{ path: resolve(cwd, CONFIG_DIR_NAME, "skills"), source: "project" },  // .openvibe/skills
+		{ path: resolve(cwd, CONFIG_DIR_NAME, "skills"), source: "project" }, // .openvibe/skills
 		{ path: resolve(cwd, ".agents", "skills"), source: "project-agents" }, // .agents/skills
 		{ path: resolve(cwd, ".claude", "skills"), source: "project-claude" }, // .claude/skills
 	];

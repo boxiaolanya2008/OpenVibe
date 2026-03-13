@@ -2,6 +2,18 @@
 
 // Config paths
 export { getAgentDir, VERSION } from "./config.js";
+// Agent modes
+export {
+	AGENT_MODES,
+	type AgentMode,
+	type AgentModeConfig,
+	getAgentModeConfig,
+	getAllModes,
+	getClaudeSkillsPath,
+	getModePromptAddition,
+	getModeThinkingLevel,
+	getModeTools,
+} from "./core/agent-modes.js";
 export {
 	AgentSession,
 	type AgentSessionConfig,
@@ -13,18 +25,6 @@ export {
 	parseSkillBlock,
 	type SessionStats,
 } from "./core/agent-session.js";
-// Agent modes
-export {
-	type AgentMode,
-	type AgentModeConfig,
-	AGENT_MODES,
-	getAllModes,
-	getAgentModeConfig,
-	getModePromptAddition,
-	getModeThinkingLevel,
-	getModeTools,
-	getClaudeSkillsPath,
-} from "./core/agent-modes.js";
 // Auth and model registry
 export {
 	type ApiKeyCredential,

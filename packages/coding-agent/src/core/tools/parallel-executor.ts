@@ -93,7 +93,7 @@ class AsyncTaskExecutor {
 		}
 	}
 }
-const globalExecutor = new AsyncTaskExecutor();
+const _globalExecutor = new AsyncTaskExecutor();
 export async function parallelExecute<T, R>(
 	items: T[],
 	mapper: (item: T, index: number) => Promise<R> | R,
@@ -102,7 +102,7 @@ export async function parallelExecute<T, R>(
 		priority?: number;
 	} = {},
 ): Promise<R[]> {
-	const { concurrency = MAX_CONCURRENCY, priority = 5 } = options;
+	const { concurrency = MAX_CONCURRENCY } = options;
 	if (items.length === 0) return [];
 	if (items.length === 1) return [await mapper(items[0], 0)];
 	if (items.length <= 4) {
@@ -112,11 +112,7 @@ export async function parallelExecute<T, R>(
 	const iterator = items.entries();
 	async function worker(): Promise<void> {
 		for (const [index, item] of iterator) {
-			try {
-				results[index] = await mapper(item, index);
-			} catch (error) {
-				throw error;
-			}
+			results[index] = await mapper(item, index);
 		}
 	}
 	const workers = Array(Math.min(concurrency, items.length))
@@ -166,7 +162,7 @@ export class BatchProcessor<T, R> {
 		const batch = this.queue.splice(0, this.concurrency);
 		try {
 			const results = await this.processor(batch);
-			results.forEach((result, index) => {
+			results.forEach((result, _index) => {
 				const id = Math.random().toString(36).substring(2);
 				this.results.set(id, result);
 			});

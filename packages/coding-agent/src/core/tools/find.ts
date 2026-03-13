@@ -2,8 +2,6 @@ import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
 import { type Static, Type } from "@sinclair/typebox";
 import { existsSync } from "fs";
 import { globSync } from "glob";
-import path from "path";
-import { ensureTool } from "../../utils/tools-manager.js";
 import { resolveToCwd } from "./path-utils.js";
 
 const findSchema = Type.Object({

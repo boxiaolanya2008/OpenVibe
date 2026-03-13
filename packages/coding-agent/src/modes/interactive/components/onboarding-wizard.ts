@@ -24,10 +24,8 @@ export class OnboardingWizard {
 	private state: WizardState;
 	private onComplete: () => void;
 	private onCancel: () => void;
-	private tui: TUI;
 
-	constructor(tui: TUI, onComplete: () => void, onCancel: () => void) {
-		this.tui = tui;
+	constructor(_tui: TUI, onComplete: () => void, onCancel: () => void) {
 		this.onComplete = onComplete;
 		this.onCancel = onCancel;
 		this.state = {
@@ -86,7 +84,7 @@ export class OnboardingWizard {
 		const steps: OnboardingStep[] = ["welcome", "api-url", "api-key", "model-id", "brand", "complete"];
 		const currentIndex = steps.indexOf(this.state.step);
 		const progress = steps
-			.map((step, index) => {
+			.map((_step, index) => {
 				if (index < currentIndex) return "✓";
 				if (index === currentIndex) return "●";
 				return "○";

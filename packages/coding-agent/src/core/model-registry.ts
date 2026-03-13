@@ -3,15 +3,11 @@ import {
 	type AssistantMessageEventStream,
 	type Context,
 	type Model,
-	registerApiProvider,
 	resetApiProviders,
 	type SimpleStreamOptions,
 } from "@mariozechner/pi-ai";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-import { getAgentDir } from "../config.js";
 import type { AuthStorage } from "./auth-storage.js";
-import { clearConfigValueCache, resolveConfigValue, resolveHeaders } from "./resolve-config-value.js";
+import { clearConfigValueCache } from "./resolve-config-value.js";
 import { loadUserConfig } from "./user-config.js";
 
 export const clearApiKeyCache = clearConfigValueCache;
@@ -23,7 +19,7 @@ export class ModelRegistry {
 
 	constructor(
 		readonly authStorage: AuthStorage,
-		modelsJsonPath?: string,
+		_modelsJsonPath?: string,
 	) {
 		this.loadUserConfiguredModel();
 	}

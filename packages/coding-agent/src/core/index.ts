@@ -9,6 +9,17 @@ export {
 	StreamMerger,
 } from "./accelerated-stream.js";
 export {
+	AGENT_MODES,
+	type AgentMode,
+	type AgentModeConfig,
+	getAgentModeConfig,
+	getAllModes,
+	getClaudeSkillsPath,
+	getModePromptAddition,
+	getModeThinkingLevel,
+	getModeTools,
+} from "./agent-modes.js";
+export {
 	AgentSession,
 	type AgentSessionConfig,
 	type AgentSessionEvent,
@@ -18,17 +29,6 @@ export {
 	type SessionStats,
 } from "./agent-session.js";
 export {
-	type AgentMode,
-	type AgentModeConfig,
-	AGENT_MODES,
-	getAllModes,
-	getAgentModeConfig,
-	getModePromptAddition,
-	getModeThinkingLevel,
-	getModeTools,
-	getClaudeSkillsPath,
-} from "./agent-modes.js";
-export {
 	APIParallelExecutor,
 	type ConcurrencyStats,
 	detectOptimalConcurrency,
@@ -36,36 +36,35 @@ export {
 } from "./api-concurrency.js";
 export { type BashExecutorOptions, type BashResult, executeBash, executeBashWithOperations } from "./bash-executor.js";
 export type { CompactionResult } from "./compaction/index.js";
-export { createEventBus, type EventBus, type EventBusController } from "./event-bus.js";
-
 // Context Architecture - Third-party large context support (1M tokens)
 export {
-	// Interfaces
-	type IContextProvider,
-	type IModelContextConfig,
-	type IProcessedContext,
-	type IOverflowResult,
-	type IContextProviderRegistry,
-	type IContextEnhancement,
-	// Main implementation
-	LargeContextProvider,
-	getLargeContextProvider,
-	// Registry
-	ContextProviderRegistry,
-	getContextProviderRegistry,
-	enhanceModelContext,
-	getModelContextConfig,
-	initializeContextProviders,
+	type ContextConfig,
 	// Context Manager
 	ContextManager,
 	ContextMiddleware,
-	getContextManager,
-	initializeContextManager,
-	type ContextConfig,
-	type ProviderContextConfig,
-	type GlobalContextConfig,
+	// Registry
+	ContextProviderRegistry,
 	type ContextStats,
+	enhanceModelContext,
+	type GlobalContextConfig,
+	getContextManager,
+	getContextProviderRegistry,
+	getLargeContextProvider,
+	getModelContextConfig,
+	type IContextEnhancement,
+	// Interfaces
+	type IContextProvider,
+	type IContextProviderRegistry,
+	type IModelContextConfig,
+	type IOverflowResult,
+	type IProcessedContext,
+	initializeContextManager,
+	initializeContextProviders,
+	// Main implementation
+	LargeContextProvider,
+	type ProviderContextConfig,
 } from "./context-architecture.js";
+export { createEventBus, type EventBus, type EventBusController } from "./event-bus.js";
 
 export {
 	type AgentEndEvent,

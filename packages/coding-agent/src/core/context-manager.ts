@@ -355,7 +355,10 @@ export class ContextMiddleware {
 	/**
 	 * Process context before sending to API
 	 */
-	processContext(messages: unknown[], modelId: string): {
+	processContext(
+		messages: unknown[],
+		modelId: string,
+	): {
 		messages: unknown[];
 		truncated: boolean;
 		originalTokens: number;

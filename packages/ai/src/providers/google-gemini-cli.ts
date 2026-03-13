@@ -1,13 +1,4 @@
-import type {
-	Api,
-	AssistantMessage,
-	Context,
-	Model,
-	SimpleStreamOptions,
-	StreamOptions,
-	TextContent,
-	ToolCall,
-} from "../types.js";
+import type { Api, AssistantMessage, Context, Model, SimpleStreamOptions, StreamOptions } from "../types.js";
 import { AssistantMessageEventStream } from "../utils/event-stream.js";
 
 export type GoogleThinkingLevel = "THINKING_LEVEL_UNSPECIFIED" | "MINIMAL" | "LOW" | "MEDIUM" | "HIGH";
@@ -24,8 +15,8 @@ export interface GoogleGeminiCliOptions extends StreamOptions {
 
 export function streamGoogleGeminiCli(
 	model: Model<"google-gemini-cli">,
-	context: Context,
-	options?: GoogleGeminiCliOptions,
+	_context: Context,
+	_options?: GoogleGeminiCliOptions,
 ): AssistantMessageEventStream {
 	const stream = new AssistantMessageEventStream();
 	(async () => {

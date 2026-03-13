@@ -3,9 +3,8 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { AssistantMessage, ImageContent, Message, Model } from "@mariozechner/pi-ai";
+import type { AssistantMessage, ImageContent, Message } from "@mariozechner/pi-ai";
 import type {
-	AutocompleteItem,
 	EditorAction,
 	EditorComponent,
 	EditorTheme,
@@ -19,8 +18,6 @@ import {
 	CombinedAutocompleteProvider,
 	type Component,
 	Container,
-	fuzzyFilter,
-	Input,
 	Loader,
 	Markdown,
 	matchesKey,
@@ -32,15 +29,9 @@ import {
 	visibleWidth,
 } from "@mariozechner/pi-tui";
 import { spawn, spawnSync } from "child_process";
-import {
-	APP_NAME,
-	getAuthPath,
-	getDebugLogPath,
-	getShareViewerUrl,
-	VERSION,
-} from "../../config.js";
+import { APP_NAME, getDebugLogPath, getShareViewerUrl, VERSION } from "../../config.js";
 import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.js";
-import { getBrandedWelcomeMessage, getProductName } from "../../core/branded-ai.js";
+import { getProductName } from "../../core/branded-ai.js";
 import type { CompactionResult } from "../../core/compaction/index.js";
 import type {
 	ExtensionContext,
@@ -69,7 +60,6 @@ import { BranchSummaryMessageComponent } from "./components/branch-summary-messa
 import { CompactionSummaryMessageComponent } from "./components/compaction-summary-message.js";
 import { CustomEditor } from "./components/custom-editor.js";
 import { CustomMessageComponent } from "./components/custom-message.js";
-import { DaxnutsComponent } from "./components/daxnuts.js";
 import { DynamicBorder } from "./components/dynamic-border.js";
 import { ExtensionEditorComponent } from "./components/extension-editor.js";
 import { ExtensionInputComponent } from "./components/extension-input.js";
@@ -158,7 +148,6 @@ export class InteractiveMode {
 	private compactionQueuedMessages: CompactionQueuedMessage[] = [];
 	private shutdownRequested = false;
 	private extensionSelector: ExtensionSelectorComponent | undefined = undefined;
-	private skillsSelector: SkillsSelectorComponent | undefined = undefined;
 	private extensionInput: ExtensionInputComponent | undefined = undefined;
 	private extensionEditor: ExtensionEditorComponent | undefined = undefined;
 	private extensionTerminalInputUnsubscribers = new Set<() => void>();
@@ -3075,11 +3064,6 @@ export class InteractiveMode {
 		this.updateEditorBorderColor();
 		this.showStatus(`Thinking level set to: ${normalizedLevel}`);
 	}
-	private handleDaxnuts(): void {
-		this.chatContainer.addChild(new Spacer(1));
-		this.chatContainer.addChild(new DaxnutsComponent(this.ui));
-		this.ui.requestRender();
-	}
 	private async handleBashCommand(command: string, excludeFromContext = false): Promise<void> {
 		const extensionRunner = this.session.extensionRunner;
 		const eventResult = extensionRunner
@@ -3213,15 +3197,9 @@ export class InteractiveMode {
 					// Show skill invocation message
 					this.chatContainer.addChild(new Spacer(1));
 					this.chatContainer.addChild(
-						new Text(
-							theme.fg("accent", `▶ Invoking skill: `) + theme.fg("muted", skill.name),
-							1,
-							0,
-						),
+						new Text(theme.fg("accent", `▶ Invoking skill: `) + theme.fg("muted", skill.name), 1, 0),
 					);
-					this.chatContainer.addChild(
-						new Text(theme.fg("dim", `  Location: ${skill.filePath}`), 1, 0),
-					);
+					this.chatContainer.addChild(new Text(theme.fg("dim", `  Location: ${skill.filePath}`), 1, 0));
 					this.ui.requestRender();
 
 					// Read the skill file content and send as context
@@ -3231,9 +3209,7 @@ export class InteractiveMode {
 
 						// Extract the content after frontmatter
 						const frontmatterEnd = skillContent.indexOf("---", 4);
-						const content = frontmatterEnd !== -1
-							? skillContent.slice(frontmatterEnd + 3).trim()
-							: skillContent;
+						const content = frontmatterEnd !== -1 ? skillContent.slice(frontmatterEnd + 3).trim() : skillContent;
 
 						// Create a prompt that includes the skill
 						const prompt = `<skill name="${skill.name}" location="${skill.filePath}">\n${content}\n</skill>\n\nPlease apply the "${skill.name}" skill to help me.`;
@@ -3241,7 +3217,9 @@ export class InteractiveMode {
 						// Send the skill to the agent
 						await this.session.prompt(prompt);
 					} catch (error) {
-						this.showError(`Failed to load skill "${skill.name}": ${error instanceof Error ? error.message : "Unknown error"}`);
+						this.showError(
+							`Failed to load skill "${skill.name}": ${error instanceof Error ? error.message : "Unknown error"}`,
+						);
 					}
 				},
 				onCancel: () => {
