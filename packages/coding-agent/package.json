@@ -1,6 +1,6 @@
 {
 	"name": "openvibe",
-	"version": "0.60.3",
+	"version": "0.60.4",
 	"description": "OpenVibe - AI Coding Assistant CLI",
 	"type": "module",
 	"piConfig": {
@@ -41,9 +41,9 @@
 	},
 	"dependencies": {
 		"@mariozechner/jiti": "^2.6.2",
-		"@boxiaolanya2008/pi-agent-core": "^0.60.3",
-		"@boxiaolanya2008/pi-ai": "^0.60.3",
-		"@boxiaolanya2008/pi-tui": "^0.60.3",
+		"@boxiaolanya2008/pi-agent-core": "^0.60.4",
+		"@boxiaolanya2008/pi-ai": "^0.60.4",
+		"@boxiaolanya2008/pi-tui": "^0.60.4",
 		"@silvia-odwyer/photon-node": "^0.3.4",
 		"chalk": "^5.5.0",
 		"cli-highlight": "^2.1.11",

@@ -1,6 +1,6 @@
 {
 	"name": "@boxiaolanya2008/pi",
-	"version": "0.60.3",
+	"version": "0.60.4",
 	"description": "CLI tool for managing vLLM deployments on GPU pods",
 	"type": "module",
 	"bin": {
@@ -33,7 +33,7 @@
 		"node": ">=20.0.0"
 	},
 	"dependencies": {
-		"@boxiaolanya2008/pi-agent-core": "^0.60.3",
+		"@boxiaolanya2008/pi-agent-core": "^0.60.4",
 		"chalk": "^5.5.0"
 	},
 	"devDependencies": {}

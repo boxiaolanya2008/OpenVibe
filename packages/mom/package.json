@@ -1,6 +1,6 @@
 {
 	"name": "@boxiaolanya2008/pi-mom",
-	"version": "0.60.3",
+	"version": "0.60.4",
 	"description": "Slack bot that delegates messages to the OpenVibe coding agent",
 	"type": "module",
 	"bin": {
@@ -20,8 +20,8 @@
 	},
 	"dependencies": {
 		"@anthropic-ai/sandbox-runtime": "^0.0.16",
-		"@boxiaolanya2008/pi-agent-core": "^0.60.3",
-		"@boxiaolanya2008/pi-ai": "^0.60.3",
+		"@boxiaolanya2008/pi-agent-core": "^0.60.4",
+		"@boxiaolanya2008/pi-ai": "^0.60.4",
 		"openvibe": "file:../coding-agent",
 		"@sinclair/typebox": "^0.34.0",
 		"@slack/socket-mode": "^2.0.0",
